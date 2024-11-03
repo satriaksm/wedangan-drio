@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Route::get('/products', [ProductsController::class, 'index'])->name('produk.index');
+    // Route::get('/products/create', [ProductsController::class, 'create'])->name('produk.create');
+    // Route::post('/products', [ProductsController::class, 'store'])->name('produk.store');
+    // Route::get('/products/update/{id}', [ProductsController::class, 'edit'])->name('produk.edit');
+    // Route::put('/products/{id}', [ProductsController::class, 'update'])->name('produk.update');
+    // Route::delete('/products/{id}', [ProductsController::class, 'destroy'])->name('produk.destroy');
 });
 
 Route::get('/images/{folder}/{filename}', function ($folder, $filename) {

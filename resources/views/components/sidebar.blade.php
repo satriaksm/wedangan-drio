@@ -1,5 +1,5 @@
 <nav class="bg-primary border-gray-200 dark:bg-white fixed top-0 z-50 w-full border-b">
-    <div class="max-w-screen-3xl flex flex-wrap items-center justify-between py-2 w-full px-2 md:px-4">
+    <div class="max-w-screen-3xl flex flex-wrap items-center justify-between py-2 sm:py-[10px] w-full px-2 md:px-4">
         <div class="flex gap-2">
             <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar"
             aria-controls="sidebar-multi-level-sidebar" type="button"
@@ -12,9 +12,9 @@
                 </path>
             </svg>
         </button>
-            <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="{{ url('/images/assets/Wedangan-DRio-White.png') }}" class="h-6 hidden md:block" alt="logo" />
-                <h6 class="font-bold text-white text-xl md:hidden">Wedangan D'Rio</h6>
+            <a href="/" class="flex items-center rtl:space-x-reverse">
+                <img src="{{ url('/images/assets/Wedangan-DRio-White.png') }}" class="ms-4 md:ms-0 h-6 hidden sm:block" alt="logo" />
+                <h6 class="font-bold text-white text-xl sm:hidden">Wedangan D'Rio</h6>
             </a>
         </div>
 
@@ -25,9 +25,9 @@
                 <!-- Dropdown menu -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="">
+                        <button class="flex me-4 md:me-8 items-center">
                             {{-- <div>{{ Auth::user()->name }}</div> --}}
-                                <img class="w-11 h-11 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user">
+                                <img class="w-9 h-9 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user">
                         </button>
                     </x-slot>
 
@@ -55,7 +55,7 @@
     </div>
   </nav>
 
-  <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 pt-16 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+  <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 pt-12 z-40 w-64 h-screen transition-transform -translate-x-full md:translate-x-0" aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto bg-primary  dark:bg-gray-800">
        <ul class="space-y-2 font-medium">
           <li>
@@ -109,8 +109,8 @@
     </div>
  </aside>
 
-<div class="p-4 sm:ml-64">
-    <div class="p-1 lg:p-8 border-gray-200 rounded-lg dark:border-gray-700 mt-14">
+<div class="p-4 md:ml-64">
+    <div class="p-1 md:p-8 border-gray-200 rounded-lg dark:border-gray-700 mt-14">
         @yield('content')
     </div>
 </div>

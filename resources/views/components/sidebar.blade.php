@@ -13,7 +13,7 @@
             </svg>
         </button>
             <a href="/" class="flex items-center rtl:space-x-reverse">
-                <img src="{{ url('/images/assets/Wedangan-DRio-White.png') }}" class="ms-4 md:ms-0 h-6 hidden sm:block" alt="logo" />
+                <img src="{{ url('/images/assets/Wedangan-DRio-White.png') }}" class="ms-4 md:ms-0 h-8 hidden sm:block" alt="logo" />
                 <h6 class="font-bold text-white text-xl sm:hidden">Wedangan D'Rio</h6>
             </a>
         </div>

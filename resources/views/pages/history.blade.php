@@ -34,7 +34,7 @@
 <form class="max-w-3xl mx-auto fixed flex justify-center">
 
 </form>
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 rounded-l bg-white text-primary">
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 rounded-lg bg-white text-primary">
     <table class="w-full text-xs lg:text-sm text-left rtl:text-right dark:text-gray-400">
         <thead class="text-sm uppercase dark:bg-gray-700 dark:text-white border-b bg-primary text-white">
             <tr>
@@ -56,8 +56,8 @@
             {{-- @foreach ($produk as $no => $item) --}}
                     <tr
                     class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
-                    <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
-                        0001
+                    <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center min-w-8">
+                        1
                     </td>
                     <td scope="row"
                         class="px-1 py-2 lg:px-6 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center truncate max-w-36 text-balance" >
@@ -73,7 +73,119 @@
                     <tr
                     class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
                     <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
-                        0001
+                        1
+                    </td>
+                    <td scope="row"
+                        class="px-1 py-2 lg:px-6 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center truncate max-w-36 text-balance" >
+                        Produk 1, Produk 2, Produk 3, Produk 4
+                    </td>
+                    <td class="lg:table-cell px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center text-wrap">
+                        01-10-2024 23:30
+                    </td>
+                    <td class="px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center">
+                        Rp 999.000
+                    </td>
+                </tr>
+                    <tr
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
+                        1
+                    </td>
+                    <td scope="row"
+                        class="px-1 py-2 lg:px-6 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center truncate max-w-36 text-balance" >
+                        Produk 1, Produk 2, Produk 3, Produk 4
+                    </td>
+                    <td class="lg:table-cell px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center text-wrap">
+                        01-10-2024 23:30
+                    </td>
+                    <td class="px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center">
+                        Rp 999.000
+                    </td>
+                </tr>
+                    <tr
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
+                        1
+                    </td>
+                    <td scope="row"
+                        class="px-1 py-2 lg:px-6 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center truncate max-w-36 text-balance" >
+                        Produk 1, Produk 2, Produk 3, Produk 4
+                    </td>
+                    <td class="lg:table-cell px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center text-wrap">
+                        01-10-2024 23:30
+                    </td>
+                    <td class="px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center">
+                        Rp 999.000
+                    </td>
+                </tr>
+                    <tr
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
+                        1
+                    </td>
+                    <td scope="row"
+                        class="px-1 py-2 lg:px-6 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center truncate max-w-36 text-balance" >
+                        Produk 1, Produk 2, Produk 3, Produk 4
+                    </td>
+                    <td class="lg:table-cell px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center text-wrap">
+                        01-10-2024 23:30
+                    </td>
+                    <td class="px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center">
+                        Rp 999.000
+                    </td>
+                </tr>
+                    <tr
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
+                        1
+                    </td>
+                    <td scope="row"
+                        class="px-1 py-2 lg:px-6 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center truncate max-w-36 text-balance" >
+                        Produk 1, Produk 2, Produk 3, Produk 4
+                    </td>
+                    <td class="lg:table-cell px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center text-wrap">
+                        01-10-2024 23:30
+                    </td>
+                    <td class="px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center">
+                        Rp 999.000
+                    </td>
+                </tr>
+                    <tr
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
+                        1
+                    </td>
+                    <td scope="row"
+                        class="px-1 py-2 lg:px-6 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center truncate max-w-36 text-balance" >
+                        Produk 1, Produk 2, Produk 3, Produk 4
+                    </td>
+                    <td class="lg:table-cell px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center text-wrap">
+                        01-10-2024 23:30
+                    </td>
+                    <td class="px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center">
+                        Rp 999.000
+                    </td>
+                </tr>
+                    <tr
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
+                        1
+                    </td>
+                    <td scope="row"
+                        class="px-1 py-2 lg:px-6 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center truncate max-w-36 text-balance" >
+                        Produk 1, Produk 2, Produk 3, Produk 4
+                    </td>
+                    <td class="lg:table-cell px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center text-wrap">
+                        01-10-2024 23:30
+                    </td>
+                    <td class="px-1 py-2 lg:px-6 lg:py-4  font-medium whitespace-nowrap dark:text-white text-center">
+                        Rp 999.000
+                    </td>
+                </tr>
+                    <tr
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
+                        1
                     </td>
                     <td scope="row"
                         class="px-1 py-2 lg:px-6 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center truncate max-w-36 text-balance" >
@@ -132,7 +244,7 @@
         <!-- Modal body -->
         <div class="p-4 md:p-5 space-y-4">
             <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                Faktur: 0001 <br>
+                Faktur: 1 <br>
                 Kasir: Admin <br>
                 Jam: 01-10-2024 23:30
             </p>

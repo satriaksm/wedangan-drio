@@ -37,26 +37,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($produk as $no => $item)
+                    @foreach ($products as $product => $item)
                         <tr
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                             <td class=" lg:py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                {{ $no + 1 }}
+                                1
                             </td>
                             <th scope="row"
                                 class="p-1 lg:px-6 lg:py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                <img src="{{ asset('storage/products/' . $item->gambar) }}" alt="{{ $item->nama_produk }}"
+                                <img src="{{ asset('storage/' . $item->img) }}" alt="{{ $item->name }}"
                                 class="w-10 h-10 lg:w-20 lg:h-20 object-cover mx-auto">
-                                {{ $item->nama_produk }}
+                                {{ $item->name }}
                             </th>
                             <td class="hidden lg:table-cell p-1 lg:px-6 lg:py-4  font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                {{ $item->kategori }}
+                                {{ $item->category_id }}
                             </td>
                             <td class="hidden lg:table-cell p-1 lg:px-6 lg:py-4  font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                {{ $item->harga_beli  }}
+                                {{ $item->purchase_price  }}
                             </td>
                             <td class="p-1 lg:px-6 lg:py-4  font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                {{ $item->harga_jual }}
+                                {{ $item->selling_price }}
                             </td>
                             <td class="p-1 lg:px-6 lg:py-4 text-center">
                                 <div class="flex items-center gap-x-2 justify-center">

@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('title', 'Transaksi')
 @section('content')
-{{-- <div x-data="{
-    products: {{ $produk->map(fn($item) => [
+<div x-data="{
+    products: {{ $products->map(fn($item) => [
         'id' => $item->id,
-        'name' => $item->nama_produk,
-        'price' => $item->harga_jual,
-        'image' => asset('storage/products/' . $item->gambar),
+        'name' => $item->name,
+        'price' => $item->selling_price,
+        'image' => asset('storage/' . $item->img),
         'quantity' => 0,
     ])->toJson() }},
     searchTerm: '',
@@ -22,7 +22,7 @@
     formatPrice(price) {
         return price.toLocaleString('id-ID');
     }
-}" class="h-screen overflow-y-auto pb-40"> --}}
+}" class="h-screen overflow-y-auto pb-40">
 
     <!-- Search and Filter Section -->
     <div class="relative">
@@ -45,7 +45,7 @@
     </div>
 
     <!-- Product Categories -->
-    <div class="mt-4 fixed w-[350px] md:w-full">
+    <div class="mt-4 w-[350px] md:w-full">
         <div class="md:justify-normal flex justify-between md:gap-2">
             <div class="bg-primary text-white rounded-full py-2 px-4 md:p-3 hover:bg-secondary">
                 <h6 class="text-sm md:text-base">Semua</h6>
@@ -63,23 +63,15 @@
     </div>
 
     <!-- Product Grid - dengan padding bottom tambahan -->
-    <div class="pt-24 grid grid-cols-2 md:grid-cols-6 gap-2 ">
+    <div class="pt-4 grid grid-cols-2 lg:grid-cols-4 gap-2 ">
         <template x-for="product in products" :key="product.id">
-            <button class="container card flex mb-2 items-center bg-secondary justify-between px-3 py-2 rounded-xl"
+            <button class="group container card flex mb-2 items-center bg-white hover:bg-tertiary hover:text-white justify-between px-3 py-2 rounded-xl shadow"
                 x-on:click="product.quantity++">
                 <div class="box flex items-center gap-x-3">
-                    <img :src="product.image" alt="" class="rounded size-10">
+                    <img :src="product.image" alt="" class="rounded h-12 w-12 md:h-16 md:w-16">
                     <div class="flex flex-col justify-between ">
-                        <h1 class="menu-item dark:text-white text-white md:text-sm text-xs md:font-medium text-left" x-text="product.name"></h1>
-                        <h3 class="harga dark:text-slate-300 text-white md:text-sm text-xs md:font-medium text-left">Rp<span x-text="formatPrice(product.price)"></span></h3>
-                    </div>
-                </div>
-                <div class="hidden md:block box">
-                    <div class="bg-white rounded-full p-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16px"
-                            viewBox="0 0 448 512">
-                            <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z" />
-                        </svg>
+                        <h1 class="menu-item dark:text-white group-hover:text-white text-primary md:text-base text-sm md:font-medium text-left" x-text="product.name"></h1>
+                        <h3 class="harga dark:text-slate-300 group-hover:text-white text-primary md:text-sm text-xs md:font-medium text-left">Rp <span x-text="formatPrice(product.price)"></span></h3>
                     </div>
                 </div>
             </button>
@@ -89,30 +81,30 @@
     <!-- Cart Section -->
     <div class="fixed bottom-0 left-0 right-0 px-5"
          x-show="selectedProducts.length > 0">
-         <div class="rounded-t-lg p-5 mb-[75px] max-h-[40vh] flex flex-col shadow-lg bg-primary md:ms-72">
-            <h2 class="font-semibold mb-3 text-white sm:mx-4">Rincian Pembelian</h2>
-            <div class="overflow-y-auto flex-1 pr-2">
+         <div class="rounded-t-lg p-5 mb-[75px] max-h-[38vh] flex flex-col shadow-lg bg-primary md:ms-72">
+            <h2 class="font-semibold mb-3 text-white sm:mx-4 border-b">Rincian Pembelian</h2>
+            <div class="overflow-y-auto flex-1 pr-2 sm:mx-4">
                 <template x-for="product in selectedProducts" :key="product.id">
-                    <div class="flex items-center justify-between mb-4 border-b pb-2">
-                        <div class="flex-1">
-                            <div class="text-sm" x-text="product.name"></div>
-                            <div class="text-sm">Rp <span x-text="formatPrice(product.price)"></span></div>
+                    <div class="flex items-center mb-4 border-b pb-2">
+                        <div class="basis-5/12">
+                            <div class="text-sm text-white" x-text="product.name"></div>
+                            <div class="text-sm text-white">Rp <span x-text="formatPrice(product.price)"></span></div>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 basis-4/12">
                             <button class="text-white hover:text-gray-700" x-on:click="product.quantity > 0 && product.quantity--">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </button>
-                            <span class="w-6 text-center" x-text="product.quantity"></span>
+                            <span class="w-6 text-center text-white" x-text="product.quantity"></span>
                             <button class="text-white hover:text-gray-700" x-on:click="product.quantity++">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </button>
                         </div>
-                        <div>
-                            <div class="text-sm text-primary font-medium">Total: Rp <span x-text="formatPrice(getItemTotal(product))"></span></div>
+                        <div class="basis-3/12 text-right">
+                            <div class="text-sm text-white font-medium ">Rp <span x-text="formatPrice(getItemTotal(product))"></span></div>
                         </div>
                     </div>
                 </template>

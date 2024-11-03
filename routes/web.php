@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
@@ -18,9 +19,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/transaction', function () {
-    return view('pages.transaction');
-})->middleware(['auth', 'verified'])->name('transaction');
+Route::get('/transaction', [ProductController::class, 'transaction'])
+->middleware(['auth', 'verified'])->name('transaction');
 Route::get('/history', function () {
     return view('pages.history');
 })->middleware(['auth', 'verified'])->name('history');
@@ -30,12 +30,19 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Route::get('/products', [ProductsController::class, 'index'])->name('produk.index');
-    // Route::get('/products/create', [ProductsController::class, 'create'])->name('produk.create');
-    // Route::post('/products', [ProductsController::class, 'store'])->name('produk.store');
-    // Route::get('/products/update/{id}', [ProductsController::class, 'edit'])->name('produk.edit');
-    // Route::put('/products/{id}', [ProductsController::class, 'update'])->name('produk.update');
-    // Route::delete('/products/{id}', [ProductsController::class, 'destroy'])->name('produk.destroy');
+    Route::get('/products', [ProductController::class, 'index'])->name('produk.index');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('produk.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('produk.store');
+    Route::get('/products/update/{id}', [ProductController::class, 'edit'])->name('produk.edit');
+    Route::put('/products/{id}', [ProductController::class, 'update'])->name('produk.update');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('produk.destroy');
+
+    // Route::get('/categories', [CategoryController::class, 'index'])->name('produk.index');
+    // Route::get('/categories/create', [CategoryController::class, 'create'])->name('produk.create');
+    // Route::post('/categories', [CategoryController::class, 'store'])->name('produk.store');
+    // Route::get('/categories/update/{id}', [CategoryController::class, 'edit'])->name('produk.edit');
+    // Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('produk.update');
+    // Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('produk.destroy');
 });
 
 Route::get('/images/{folder}/{filename}', function ($folder, $filename) {

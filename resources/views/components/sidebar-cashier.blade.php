@@ -3,7 +3,7 @@
         <div class="flex gap-2">
             <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar"
             aria-controls="sidebar-multi-level-sidebar" type="button"
-            class="ms-4 inline-flex items-center p-2 text-sm text-white rounded-lg lg:hidden hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            class="ms-4 inline-flex items-center p-2 text-sm text-white rounded-lg  hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
             <span class="sr-only">Open sidebar</span>
             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
@@ -13,8 +13,8 @@
             </svg>
         </button>
             <a href="/" class="flex items-center rtl:space-x-reverse">
-                <img src="{{ url('/images/assets/Wedangan-DRio-White.png') }}" class="ms-4 lg:ms-0 h-8 hidden lg:block" alt="logo" />
-                <h6 class="font-bold text-white text-xl lg:hidden">Wedangan D'Rio</h6>
+                <img src="{{ url('/images/assets/Wedangan-DRio-White.png') }}" class="ms-4 lg:ms-0 h-8 hidden" alt="logo" />
+                <h6 class="font-bold text-white text-xl ">Wedangan D'Rio</h6>
             </a>
         </div>
 
@@ -55,7 +55,7 @@
     </div>
   </nav>
 
-  <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 pt-12 sm:pt-24 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0" aria-label="Sidebar">
+  <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 pt-12 sm:pt-24 z-40 w-64 h-screen transition-transform -translate-x-full " aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto bg-primary  dark:bg-gray-800">
        <ul class="space-y-2 font-medium">
           <li>
@@ -109,8 +109,8 @@
     </div>
  </aside>
 
-<div class="p-4 lg:ml-64">
-    <div class="px-4 py-1  sm:px-4 sm:py-12 border-gray-200 rounded-lg dark:border-gray-700 mt-14">
+<div class="p-4">
+    <div class="px-4 py-1  sm:px-4 border-gray-200 rounded-lg dark:border-gray-700 mt-16 sm:mt-24">
         @yield('content')
     </div>
 </div>

@@ -22,7 +22,7 @@ class CategoryController extends Controller
         $categories = Category::latest()->paginate(10);
 
         //render view with categories
-        return view('categories.index', compact('categories'));
+        return view('pages.category.index', compact('categories'));
     }
 
     /**
@@ -32,7 +32,7 @@ class CategoryController extends Controller
      */
     public function create(): View
     {
-        return view('categories.create');
+        return view('pages.category.create');
     }
 
     /**
@@ -54,7 +54,7 @@ class CategoryController extends Controller
         ]);
 
         //redirect to index
-        return redirect()->route('categories.index')->with(['success' => 'Data saved successfully']);
+        return redirect()->route('category.index')->with(['success' => 'Data saved successfully']);
     }
 
 
@@ -70,7 +70,7 @@ class CategoryController extends Controller
         $categories = Category::findOrFail($id);
 
         //render view with category
-        return view('categories.edit', compact('categories'));
+        return view('pages.category.edit', compact('categories'));
     }
 
     /**
@@ -97,7 +97,7 @@ class CategoryController extends Controller
         ]);
 
         //redirect to index
-        return redirect()->route('categories.index')->with(['success' => 'Data Berhasil Diubah!']);
+        return redirect()->route('category.index')->with(['success' => 'Data Berhasil Diubah!']);
     }
 
     /**
@@ -115,7 +115,7 @@ class CategoryController extends Controller
         $category->delete();
 
         //redirect to index
-        return redirect()->route('categories.index')->with(['success' => 'Data Berhasil Dihapus!']);
+        return redirect()->route('category.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
 
     public function search(Request $request)
@@ -124,6 +124,6 @@ class CategoryController extends Controller
         $categories = Category::where('name', 'LIKE', "%{$search}%")
             ->paginate(10);
 
-        return view('categories.index', compact('categories'));
+        return view('pages.category.index', compact('categories'));
     }
 }

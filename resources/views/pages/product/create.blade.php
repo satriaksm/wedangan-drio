@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Tambah Produk')
+@section('title', 'Tambah Produsk')
 @section('content')
-    <div class="container my-3">
-        <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data"
-            class="flex flex-col w-full md:w-1/3 justify-center mx-auto">
+    <div class="my-3">
+        <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data"
+            class="flex flex-col w-full justify-center">
             @csrf
             <label for="name" class="block mb-2 text-sm font-medium text-black">Nama Produk</label>
             <input type="text" id="name" name="name"
@@ -36,7 +36,7 @@
             <p class="mt-1 text-sm text-gray-500">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
 
             <button type="submit"
-                class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Simpan</button>
+                class="focus:outline-none text-white bg-primary hover:bg-secondary focus:ring-4 focus:ring-green-300 font-bold rounded-lg text-sm sm:text-base px-5 py-2.5 me-2 mb-2">Simpan</button>
         </form>
     </div>
 @endsection

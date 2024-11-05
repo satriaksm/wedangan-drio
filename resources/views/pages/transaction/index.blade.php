@@ -116,7 +116,7 @@
 
             <!-- Bottom Bar -->
             <div class="px-5  hidden md:block">
-                <div class="bg-white p-5 shadow-lg">
+                <div class="bg-white p-5 shadow-lg rounded-b-xl">
                     <div class="sm:mx-4 flex items-center justify-between">
                         <div>
                             <div class="text-sm text-primary">Total</div>

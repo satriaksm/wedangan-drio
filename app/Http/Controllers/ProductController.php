@@ -30,7 +30,7 @@ class ProductController extends Controller
         $products = Product::latest()->paginate(10);
 
         //render view with products
-        return view('pages.transaction', compact('products'));
+        return view('pages.transaction.index', compact('products'));
     }
 
     /**
@@ -70,7 +70,7 @@ class ProductController extends Controller
         ]);
 
         //redirect to index
-        return redirect()->route('produk.index')->with(['success' => 'Data saved successfully']);
+        return redirect()->route('product.index')->with(['success' => 'Data saved successfully']);
     }
 
 
@@ -131,7 +131,7 @@ class ProductController extends Controller
         $product->update($data);
 
         //redirect to index
-        return redirect()->route('pages.product.index')->with(['success' => 'Data updated successfully']);
+        return redirect()->route('product.index')->with(['success' => 'Data updated successfully']);
     }
 
     /**
@@ -154,7 +154,7 @@ class ProductController extends Controller
         $product->delete();
 
         //redirect to index
-        return redirect()->route('pages.product.index')->with(['success' => 'Data deleted successfully']);
+        return redirect()->route('product.index')->with(['success' => 'Data deleted successfully']);
     }
 
     public function search(Request $request): View

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Tambah Produsk')
+@section('title', 'Tambah Produk')
 @section('content')
     <div class="my-3">
         <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data"
@@ -12,11 +12,12 @@
 
             <label for="category_id" class="block mb-2 text-sm font-medium text-black">Pilih Kategori</label>
             <select id="category_id" name="category_id"
-                class="bg-gray-50 border mb-2 border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                <option selected>Pilih Kategori</option>
-                <option value="1">Makanan</option>
-                <option value="2">Minuman</option>
-                <option value="2">Camilan</option>
+                class="bg-gray-50 border mb-2 border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                    <option selected value="">Pilih Kategori</option>
+                @foreach ( $categories as $category)
+                    <option value="{{ $category['id']}}">{{ $category['name']}}</option>
+                @endforeach
+
             </select>
 
             <label for="purchase_price" class="block mb-2 text-sm font-medium text-black ">Harga Beli</label>

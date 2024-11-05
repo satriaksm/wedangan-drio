@@ -49,36 +49,35 @@
             <!-- Product Categories -->
             <div class="mt-4  overflow-x-auto">
                 <div class="sm:justify-normal flex gap-1 sm:gap-3">
-                    <div class="bg-primary text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
-                        <h6 class="text-sm sm:text-base">Semua</h6>
-                    </div>
-                    <div class="bg-tertiary text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
-                        <h6 class="text-sm sm:text-base">Makanan</h6>
-                    </div>
-                    <div class="bg-tertiary text-white rounded-full py-2 px-3 sm:p-3 hover:bg-secondary">
-                        <h6 class="text-sm sm:text-base">Minuman</h6>
-                    </div>
-                    <div class="bg-tertiary text-white rounded-full py-2 px-3 sm:p-3 hover:bg-secondary">
-                        <h6 class="text-sm sm:text-base">Camilan</h6>
-                    </div>
+                        <button class="bg-primary text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
+                            <h6 class="text-sm sm:text-base">Semua</h6>
+                        </button>
+                    @foreach ( $categories as $category )
+                        <button class="bg-tertiary text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
+                            <h6 class="text-sm sm:text-base">{{$category['name']}}</h6>
+                        </button>
+                    @endforeach
                 </div>
             </div>
 
             <!-- Product Grid - dengan padding bottom tambahan -->
-            <div class="pt-4 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 2xl:grid-cols-5">
-                <template x-for="product in products" :key="product.id">
-                    <button class="group container card flex mb-2 items-center bg-white hover:bg-tertiary hover:text-white justify-between px-3 py-2 rounded-xl shadow"
-                        x-on:click="product.quantity++">
-                        <div class="box flex items-center gap-x-3">
-                            <img :src="product.image" alt="" class="rounded h-12 w-12 sm:h-16 sm:w-16">
-                            <div class="flex flex-col justify-between ">
-                                <h1 class="menu-item dark:text-white group-hover:text-white text-primary sm:text-base text-sm sm:font-medium text-left sm:leading-4 leading-4" x-text="product.name"></h1>
-                                <h3 class="harga dark:text-slate-300 group-hover:text-white text-primary sm:text-sm text-xs sm:font-medium text-left">Rp <span x-text="formatPrice(product.price)"></span></h3>
+            <div class="md:flex-1 overflow-y-auto">
+                <div class="pt-3 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 2xl:grid-cols-5" :class="{'max-h-[calc(100vh-300px)]': selectedProducts.length > 0}">
+                    <template x-for="product in products" :key="product.id">
+                        <button class="group container card flex mb-2 items-center bg-white hover:bg-tertiary hover:text-white justify-between px-3 py-2 rounded-xl shadow"
+                            x-on:click="product.quantity++">
+                            <div class="box flex items-center gap-x-3">
+                                <img :src="product.image" alt="" class="rounded h-12 w-12   sm:h-16 sm:w-16">
+                                <div class="flex flex-col justify-between ">
+                                    <h1 class="menu-item dark:text-white group-hover:text-white text-primary sm:text-base text-sm sm:font-medium text-left sm:leading-4 leading-4" x-text="product.name"></h1>
+                                    <h3 class="harga dark:text-slate-300 group-hover:text-white text-primary sm:text-sm text-xs sm:font-medium text-left">Rp <span x-text="formatPrice(product.price)"></span></h3>
+                                </div>
                             </div>
-                        </div>
-                    </button>
-                </template>
+                        </button>
+                    </template>
+                </div>
             </div>
+
         </div>
 
         <div class="min-w-[400px] max-w-full flex-grow hidden md:block">

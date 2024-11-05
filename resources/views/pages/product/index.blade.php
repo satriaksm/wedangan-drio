@@ -35,7 +35,20 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2">
+        <div class="mb-4 overflow-x-auto">
+            <div class="sm:justify-normal flex gap-1 sm:gap-3">
+                    <button class="bg-primary text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
+                        <h6 class="text-sm sm:text-base">Semua</h6>
+                    </button>
+                @foreach ( $categories as $category )
+                    <button class="bg-tertiary text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
+                        <h6 class="text-sm sm:text-base">{{$category['name']}}</h6>
+                    </button>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 ">
             @foreach ($products as $product => $item)
                 <div class="p-4 bg-white rounded-xl shadow items-center flex justify-between">
                     <div class="flex gap-2 items-center w-full">

@@ -15,9 +15,9 @@
             <label for="category_id" class="block mb-2 text-sm font-medium text-black">Pilih Kategori</label>
             <select id="category_id" name="category_id"
                 class="bg-gray-50 border mb-2 border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                <option value="Makanan" {{ $products->category_id == '1' ? 'selected' : '' }}>Makanan</option>
-                <option value="Minuman" {{ $products->category_id  == '2' ? 'selected' : '' }}>Minuman</option>
-                <option value="Camilan" {{ $products->category_id  == '3' ? 'selected' : '' }}>Camilan</option>
+                @foreach ( $categories as $category)
+                    <option value="{{ $category['id']}}">{{ $category['name']}}</option>
+                @endforeach
             </select>
 
             <label for="purchase_price" class="block mb-2 text-sm font-medium text-black ">Harga Beli</label>

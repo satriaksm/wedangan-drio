@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Models\Category;
+use Illuminate\View\View;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,17 +21,17 @@ class ProductController extends Controller
     {
         //get all products
         $products = Product::latest()->paginate(10);
-
+        $categories = Category::all();
         //render view with products
-        return view('pages.product.index', compact('products'));
+        return view('pages.product.index', compact('products', 'categories'));
     }
     public function transaction(): View
     {
         //get all products
         $products = Product::latest()->paginate(10);
-
+        $categories = Category::all();
         //render view with products
-        return view('pages.transaction.index', compact('products'));
+        return view('pages.transaction.index', compact('products','categories'));
     }
 
     /**
@@ -40,7 +41,8 @@ class ProductController extends Controller
      */
     public function create(): View
     {
-        return view('pages.product.create');
+        $categories = Category::all();
+        return view('pages.product.create', compact('categories'));
     }
 
     /**
@@ -84,9 +86,9 @@ class ProductController extends Controller
     {
         //get product by ID
         $products = Product::findOrFail($id);
-
+        $categories = Category::all();
         //render view with product
-        return view('pages.product.edit', compact('products'));
+        return view('pages.product.edit', compact('products', 'categories'));
     }
 
     /**

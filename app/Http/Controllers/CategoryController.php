@@ -45,7 +45,7 @@ class CategoryController extends Controller
     {
         //validate form
         $request->validate([
-            'name' => 'required, max: 255',
+            'name' => 'required |max: 255',
         ]);
 
         //create category
@@ -84,7 +84,7 @@ class CategoryController extends Controller
     {
         //validate form
         $request->validate([
-            'name' => 'required, max: 255',
+            'name' => 'required | max: 255',
 
         ]);
 

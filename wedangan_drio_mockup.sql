@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 07 Nov 2024 pada 04.04
+-- Waktu pembuatan: 07 Nov 2024 pada 06.59
 -- Versi server: 8.0.30
 -- Versi PHP: 8.3.11
 
@@ -66,7 +66,7 @@ INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (1, 'Makanan', NULL, NULL),
 (2, 'Minuman', '2024-11-05 09:22:01', '2024-11-05 09:22:01'),
 (3, 'Gorengan', '2024-11-05 09:22:10', '2024-11-05 09:22:10'),
-(6, 'Cemilan', '2024-11-06 20:27:28', '2024-11-06 20:27:28');
+(12, 'Cemilan', '2024-11-06 23:23:28', '2024-11-06 23:23:28');
 
 -- --------------------------------------------------------
 
@@ -176,12 +176,14 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `category_id`, `selling_price`, `purchase_price`, `img`, `created_at`, `updated_at`) VALUES
-(5, 'Sate Puyuh', 1, 4000, 3000, 'images/products/sate-puyuh.jpg', '2024-11-03 06:13:48', '2024-11-03 06:13:48'),
-(6, 'Sate Usus', 1, 3000, 2000, 'images/products/sate-usus.jpg', '2024-11-03 06:14:06', '2024-11-03 06:14:06'),
-(7, 'Tempe Goreng', 3, 1000, 500, 'images/products/tempe-goreng.png', '2024-11-03 06:31:43', '2024-11-06 20:46:26'),
-(12, 'Kopi', 2, 4000, 2000, 'images/products/kopi.png', '2024-11-05 09:22:59', '2024-11-05 09:22:59'),
-(13, 'Teh', 2, 3000, 1500, 'images/products/teh.png', '2024-11-05 09:24:43', '2024-11-05 09:24:43'),
-(14, 'Teh Kampul', 2, 3500, 2000, 'images/products/teh-kampul.png', '2024-11-05 09:24:59', '2024-11-05 09:24:59');
+(18, 'Nasi Kucing', 1, 2000, 1500, 'images/products/mBNtjgHX021M4qAGBtVP25Z11c5EeSOO6VILwAeM.png', '2024-11-06 23:05:17', '2024-11-06 23:05:17'),
+(19, 'Sate Puyuh', 1, 4000, 3000, 'images/products/hK87Y1p9ztAkXBgetKZCYaRTnhUlhDVAqgkMyAe3.jpg', '2024-11-06 23:05:31', '2024-11-06 23:05:31'),
+(21, 'Kopi', 2, 4000, 3000, 'images/products/CuVMy8e2pa9CesoP8CCGj3PDvqGgPIbCScif2QYC.png', '2024-11-06 23:20:15', '2024-11-06 23:20:15'),
+(22, 'Teh Kampul', 2, 3000, 2000, 'images/products/j6sSiK0r1II1OtBPQTZO8yiqwIPs0IoRDRH8SrUv.png', '2024-11-06 23:20:32', '2024-11-06 23:20:32'),
+(23, 'Tempe Goreng', 3, 1000, 500, 'images/products/H4cd5HRUc1QQPU4nupnHYalnE0ynOI93aLzvkvnB.png', '2024-11-06 23:20:53', '2024-11-06 23:23:34'),
+(24, 'Sate Usus', 1, 2000, 1500, 'images/products/iGV5Hmq9RcDvyeE4jT6Sq7tTmS9oKIXiuqljOp8u.jpg', '2024-11-06 23:21:16', '2024-11-06 23:21:16'),
+(25, 'Kacang Goreng', 12, 1000, 500, 'images/products/DkvVOaw5flrlGn1uD688AnUM41vvlMNSWYDAuNau.jpg', '2024-11-06 23:23:49', '2024-11-06 23:23:49'),
+(27, 'Kerupuk Kulit', 12, 2000, 1000, 'images/products/2gnVHs8X354Hbcgh1UB5gF78t8HtJbNuoSPSRh4a.jpg', '2024-11-06 23:26:36', '2024-11-06 23:26:36');
 
 -- --------------------------------------------------------
 
@@ -203,7 +205,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('O3KbduL7Jbof7r3XawTOQ4j8Jz7SfDOUL87qs03O', 1, '127.0.0.1', 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/17.5 Mobile/15A5370a Safari/602.1', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicHJSTk0zT3p4VjdtRERhcW9DNlFCVG9FQm5QYnVWUjIzTHN1ak5QUSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDQ6Imh0dHA6Ly93ZWRhbmdhbi1kcmlvLW1vY2t1cC50ZXN0L3RyYW5zYWN0aW9uIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1730951956);
+('O3KbduL7Jbof7r3XawTOQ4j8Jz7SfDOUL87qs03O', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicHJSTk0zT3p4VjdtRERhcW9DNlFCVG9FQm5QYnVWUjIzTHN1ak5QUSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDQ6Imh0dHA6Ly93ZWRhbmdhbi1kcmlvLW1vY2t1cC50ZXN0L3RyYW5zYWN0aW9uIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1730962723);
 
 -- --------------------------------------------------------
 
@@ -313,7 +315,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -337,7 +339,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`

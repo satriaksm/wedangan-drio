@@ -50,7 +50,7 @@
                     <div class="w-full">
                         <input type="search"
                             x-model="searchTerm"
-                            class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border border-primary focus:ring-tertiary focus:border-tertiary dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-tertiary"
+                            class="block p-2.5 w-full z-20 text-sm text-secondary bg-gray-50 rounded-lg border border-primary focus:ring-secondary focus:border-secondary dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-secondary"
                             placeholder="Cari item" />
                     </div>
                     <button type="submit"
@@ -70,15 +70,15 @@
                 <div class="sm:justify-normal flex gap-1 sm:gap-3">
                     <button
                         @click="setCategory(null)"
-                        :class="{'bg-secondary': selectedCategory === null, 'bg-primary': selectedCategory !== null}"
-                        class="text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
+                        :class="{'bg-primary': selectedCategory === null, 'bg-secondary': selectedCategory !== null}"
+                        class="text-white rounded-full py-2 px-4 sm:p-3 hover:bg-primary">
                         <h6 class="text-sm sm:text-base">Semua</h6>
                     </button>
                     @foreach ($categories as $category)
                     <button
                         @click="setCategory({{ $category->id }})"
-                        :class="{'bg-secondary': selectedCategory === {{ $category->id }}, 'bg-tertiary': selectedCategory !== {{ $category->id }}}"
-                        class="text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
+                        :class="{'bg-primary': selectedCategory === {{ $category->id }}, 'bg-secondary': selectedCategory !== {{ $category->id }}}"
+                        class="text-white rounded-full py-2 px-4 sm:p-3 hover:bg-primary">
                         <h6 class="text-sm sm:text-base">{{ $category->name }}</h6>
                     </button>
                     @endforeach
@@ -89,7 +89,7 @@
             <div class="md:flex-1 overflow-y-auto">
                 <div class="pt-3 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 2xl:grid-cols-5" :class="{'max-h-[calc(100vh-300px)]': selectedProducts.length > 0}">
                     <template x-for="product in filteredProducts" :key="product.id">
-                        <button class="group container card flex mb-2 items-center bg-white hover:bg-tertiary hover:text-white justify-between px-3 py-2 rounded-xl shadow"
+                        <button class="group container card flex mb-2 items-center bg-white hover:bg-secondary hover:text-white justify-between px-3 py-2 rounded-xl shadow"
                             x-on:click="product.quantity++">
                             <div class="box flex items-center gap-x-3">
                                 <img :src="product.image" alt="" class="rounded h-12 w-12 sm:h-16 sm:w-16">
@@ -146,7 +146,7 @@
                             <div class="text-sm text-primary">Total</div>
                             <div class="font-semibold text-primary">Rp <span x-text="formatPrice(total)"></span></div>
                         </div>
-                        <button class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg flex items-center gap-2">
+                        <button class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg flex items-center gap-2" data-modal-target="payment-modal" data-modal-toggle="payment-modal" type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
@@ -201,7 +201,7 @@
                     <div class="text-sm text-primary">Total</div>
                     <div class="font-semibold text-primary">Rp <span x-text="formatPrice(total)"></span></div>
                 </div>
-                <button class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg flex items-center gap-2">
+                <button class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg flex items-center gap-2" data-modal-target="payment-modal" data-modal-toggle="payment-modal" type="button">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
@@ -210,5 +210,56 @@
             </div>
         </div>
     </div>
+
+                            <!-- Main modal -->
+                            <div id="payment-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="fixed inset-0 bg-black opacity-50 z-40"></div>
+                                <div class="relative p-4 w-full max-w-md max-h-full z-50">
+                                    <!-- Modal content -->
+                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <!-- Modal header -->
+                                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                            <h3 class="text-lg font-black text-primary dark:text-white">
+                                                Metode Pembayaran
+                                            </h3>
+                                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-secondary rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="payment-modal">
+                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                </svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="p-4 md:p-5">
+                                            <p class="text-gray-500 dark:text-gray-400 mb-4">Pilih metode pembayaran yang diinginkan :</p>
+                                            <ul class="space-y-4 mb-4">
+                                                <li>
+                                                    <input type="radio" id="job-1" name="job" value="job-1" class="hidden peer" required />
+                                                    <label for="job-1" class="inline-flex items-center justify-between w-full p-5 text-secondary bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-primary peer-checked:text-primary hover:text-secondary hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
+                                                        <div class="block">
+                                                            <div class="w-full text-lg font-semibold">Cash</div>
+                                                            <div class="w-full text-gray-500 dark:text-gray-400">Tunai</div>
+                                                        </div>
+                                                        <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <input type="radio" id="job-2" name="job" value="job-2" class="hidden peer">
+                                                    <label for="job-2" class="inline-flex items-center justify-between w-full p-5 text-secondary bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-primary peer-checked:text-primary hover:text-secondary hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
+                                                        <div class="block">
+                                                            <div class="w-full text-lg font-semibold">Non-cash</div>
+                                                            <div class="w-full text-gray-500 dark:text-gray-400">Qris</div>
+                                                        </div>
+                                                        <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                            <button class="text-white inline-flex w-full justify-center bg-secondary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary dark:hover:bg-secondary dark:focus:ring-primary">
+                                                Next step
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 </div>
 @endsection

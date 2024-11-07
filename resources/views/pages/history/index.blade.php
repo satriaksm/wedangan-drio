@@ -17,7 +17,7 @@
     <!-- Search section yang diperbaiki -->
     <div class="relative flex-1">
         <input type="search" id="search-dropdown"
-            class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-primary focus:ring-tertiary focus:border-tertiary"
+            class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-primary focus:ring-secondary focus:border-secondary"
             placeholder="Cari #" required />
         <button type="submit"
             class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-primary rounded-e-lg border border-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300">
@@ -55,7 +55,7 @@
         <tbody>
             {{-- @foreach ($produk as $no => $item) --}}
                     <tr
-                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-secondary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
                     <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center min-w-8">
                         1
                     </td>
@@ -71,7 +71,7 @@
                     </td>
                 </tr>
                     <tr
-                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-secondary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
                     <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
                         1
                     </td>
@@ -87,7 +87,7 @@
                     </td>
                 </tr>
                     <tr
-                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-secondary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
                     <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
                         1
                     </td>
@@ -103,7 +103,7 @@
                     </td>
                 </tr>
                     <tr
-                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-secondary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
                     <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
                         1
                     </td>
@@ -119,7 +119,7 @@
                     </td>
                 </tr>
                     <tr
-                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-secondary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
                     <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
                         1
                     </td>
@@ -135,7 +135,7 @@
                     </td>
                 </tr>
                     <tr
-                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-secondary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
                     <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
                         1
                     </td>
@@ -151,7 +151,7 @@
                     </td>
                 </tr>
                     <tr
-                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-secondary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
                     <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
                         1
                     </td>
@@ -167,7 +167,7 @@
                     </td>
                 </tr>
                     <tr
-                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-secondary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
                     <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
                         1
                     </td>
@@ -183,7 +183,7 @@
                     </td>
                 </tr>
                     <tr
-                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-tertiary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
+                    class=" dark:bg-gray-900 hover:dark:bg-gray-800  border-b dark:border-gray-700 cursor-pointer hover:bg-secondary hover:text-white" onclick="" data-modal-target="default-modal" data-modal-toggle="default-modal">
                     <td class="px-1 py-2 lg:py-4 font-medium whitespace-nowrap dark:text-white text-center">
                         1
                     </td>

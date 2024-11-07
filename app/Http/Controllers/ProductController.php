@@ -17,10 +17,12 @@ class ProductController extends Controller
      *
      * @return void
      */
-    public function index(): View
+    public function index(Request $request): View
     {
         //get all products
-        $products = Product::latest()->paginate(10);
+        $products = Product::when($request->category_id, function($query, $categoryId) {
+            return $query->where('category_id', $categoryId);
+        })->get();
         $categories = Category::all();
         //render view with products
         return view('pages.product.index', compact('products', 'categories'));
@@ -28,9 +30,8 @@ class ProductController extends Controller
     public function transaction(): View
     {
         //get all products
-        $products = Product::latest()->paginate(10);
+        $products = Product::with('category')->get();
         $categories = Category::all();
-        //render view with products
         return view('pages.transaction.index', compact('products','categories'));
     }
 

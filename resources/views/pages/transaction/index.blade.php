@@ -8,31 +8,50 @@
         'price' => $item->selling_price,
         'image' => asset('storage/' . $item->img),
         'quantity' => 0,
+        'category_id' => $item->category_id
     ])->toJson() }},
+    selectedCategory: null,
     searchTerm: '',
+
+    get filteredProducts() {
+        return this.products.filter(product => {
+            const matchCategory = this.selectedCategory === null || product.category_id === this.selectedCategory;
+            const matchSearch = this.searchTerm === '' || product.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+            return matchCategory && matchSearch;
+        });
+    },
+
     get selectedProducts() {
         return this.products.filter(p => p.quantity > 0);
     },
+
     get total() {
         return this.selectedProducts.reduce((sum, product) => sum + (product.price * product.quantity), 0);
     },
+
     getItemTotal(product) {
         return product.price * product.quantity;
     },
+
     formatPrice(price) {
         return price.toLocaleString('id-ID');
+    },
+
+    setCategory(categoryId) {
+        this.selectedCategory = categoryId;
     }
 }" class="overflow-y-auto">
 
     <div class="md:flex">
         <!-- Search and Filter Section -->
-        <div class="">
+        <div class="w-full">
             <div class="relative col-span-8">
                 <div class="">
                     <div class="w-full">
-                        <input type="search" id="search-dropdown"
-                        class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border border-primary focus:ring-tertiary focus:border-tertiary dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-tertiary"
-                        placeholder="Cari item" required />
+                        <input type="search"
+                            x-model="searchTerm"
+                            class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border border-primary focus:ring-tertiary focus:border-tertiary dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-tertiary"
+                            placeholder="Cari item" />
                     </div>
                     <button type="submit"
                         class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-primary rounded-e-lg border border-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-primary dark:focus:ring-primary">
@@ -47,28 +66,34 @@
             </div>
 
             <!-- Product Categories -->
-            <div class="mt-4  overflow-x-auto">
+            <div class="mt-4 overflow-x-auto">
                 <div class="sm:justify-normal flex gap-1 sm:gap-3">
-                        <button class="bg-primary text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
-                            <h6 class="text-sm sm:text-base">Semua</h6>
-                        </button>
-                    @foreach ( $categories as $category )
-                        <button class="bg-tertiary text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
-                            <h6 class="text-sm sm:text-base">{{$category['name']}}</h6>
-                        </button>
+                    <button
+                        @click="setCategory(null)"
+                        :class="{'bg-secondary': selectedCategory === null, 'bg-primary': selectedCategory !== null}"
+                        class="text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
+                        <h6 class="text-sm sm:text-base">Semua</h6>
+                    </button>
+                    @foreach ($categories as $category)
+                    <button
+                        @click="setCategory({{ $category->id }})"
+                        :class="{'bg-secondary': selectedCategory === {{ $category->id }}, 'bg-tertiary': selectedCategory !== {{ $category->id }}}"
+                        class="text-white rounded-full py-2 px-4 sm:p-3 hover:bg-secondary">
+                        <h6 class="text-sm sm:text-base">{{ $category->name }}</h6>
+                    </button>
                     @endforeach
                 </div>
             </div>
 
-            <!-- Product Grid - dengan padding bottom tambahan -->
+            <!-- Product Grid -->
             <div class="md:flex-1 overflow-y-auto">
                 <div class="pt-3 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 2xl:grid-cols-5" :class="{'max-h-[calc(100vh-300px)]': selectedProducts.length > 0}">
-                    <template x-for="product in products" :key="product.id">
+                    <template x-for="product in filteredProducts" :key="product.id">
                         <button class="group container card flex mb-2 items-center bg-white hover:bg-tertiary hover:text-white justify-between px-3 py-2 rounded-xl shadow"
                             x-on:click="product.quantity++">
                             <div class="box flex items-center gap-x-3">
-                                <img :src="product.image" alt="" class="rounded h-12 w-12   sm:h-16 sm:w-16">
-                                <div class="flex flex-col justify-between ">
+                                <img :src="product.image" alt="" class="rounded h-12 w-12 sm:h-16 sm:w-16">
+                                <div class="flex flex-col justify-between">
                                     <h1 class="menu-item dark:text-white group-hover:text-white text-primary sm:text-base text-sm sm:font-medium text-left sm:leading-4 leading-4" x-text="product.name"></h1>
                                     <h3 class="harga dark:text-slate-300 group-hover:text-white text-primary sm:text-sm text-xs sm:font-medium text-left">Rp <span x-text="formatPrice(product.price)"></span></h3>
                                 </div>
@@ -77,8 +102,8 @@
                     </template>
                 </div>
             </div>
-
         </div>
+
 
         <div class="min-w-[400px] max-w-full flex-grow hidden md:block">
             <div class="px-5">

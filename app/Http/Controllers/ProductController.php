@@ -20,9 +20,7 @@ class ProductController extends Controller
     public function index(Request $request): View
     {
         //get all products
-        $products = Product::when($request->category_id, function($query, $categoryId) {
-            return $query->where('category_id', $categoryId);
-        })->get();
+        $products = Product::with('category')->get();
         $categories = Category::all();
         //render view with products
         return view('pages.product.index', compact('products', 'categories'));
@@ -33,6 +31,14 @@ class ProductController extends Controller
         $products = Product::with('category')->get();
         $categories = Category::all();
         return view('pages.transaction.index', compact('products','categories'));
+    }
+
+    public function pay(): View
+    {
+        //get all products
+        $products = Product::with('category')->get();
+        $categories = Category::all();
+        return view('pages.transaction.pay', compact('products','categories'));
     }
 
     /**

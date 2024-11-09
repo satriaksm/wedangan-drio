@@ -21,6 +21,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/transaction', [ProductController::class, 'transaction'])
 ->middleware(['auth', 'verified'])->name('transaction');
+Route::get('/transaction/pay', [ProductController::class, 'pay'])
+->middleware(['auth', 'verified'])->name('pay');
 Route::get('/history', function () {
     return view('pages.history.index');
 })->middleware(['auth', 'verified'])->name('history');

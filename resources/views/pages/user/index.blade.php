@@ -6,6 +6,7 @@
         'id' => $item->id,
         'name' => $item->name,
         'role' => $item->role,
+        'image' => asset('storage/' . $item->img),
     ])->toJson() }},
     selectedCategory: null,
     searchTerm: '',
@@ -43,11 +44,11 @@
                 <div class="flex justify-end px-4 pt-4">
                 </div>
                 <div class="flex flex-col items-center pb-10">
-                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ url('/images/assets/fael.png') }}" alt="User image"/>
+                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" :src="user.image" :alt="user.name"/>
                     <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white" x-text="user.name"></h5>
                     <span class="text-sm text-gray-500 dark:text-gray-400" x-text="user.role"></span>
                     <div class="flex mt-2 md:mt-4 gap-2">
-                        <a :href="'{{ route('user.edit', '') }}/' + user.id"
+                        <a :href="'/users/' + user.id + '/edit'"
                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                            Edit
                         </a>
@@ -59,9 +60,8 @@
                         </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Delete Modal -->
+                            <!-- Delete Modal -->
             <div :id="'popup-modal-' + user.id" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                 <div class="fixed inset-0 bg-black opacity-50 z-40"></div>
                 <div class="relative p-4 w-full max-w-md max-h-full z-50">
@@ -77,7 +77,7 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                             </svg>
                             <h3 class="mb-5 text-lg font-normal text-primary dark:text-primary">Are you sure you want to delete this user?</h3>
-                            <form :action="'{{ route('user.destroy', '') }}/' + user.id" method="POST" class="inline">
+                            <form :action="'/users/' + user.id" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-500 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
@@ -91,6 +91,10 @@
                     </div>
                 </div>
             </div>
+
+            </div>
+
+
         </template>
     </div>
 </div>

@@ -17,7 +17,7 @@ class ProductController extends Controller
      *
      * @return void
      */
-    public function index(Request $request): View
+    public function index(): View
     {
         //get all products
         $products = Product::with('category')->get();

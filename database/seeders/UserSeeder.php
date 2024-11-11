@@ -19,8 +19,10 @@ class UserSeeder extends Seeder
         DB::table('users')->insert(
             [
                 'name' => 'Administrator',
+                'role' => '1',
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('123123123'), // jangan lupa ganti password
+                'img' => 'images/users/fael.png',
             ]
         );
 

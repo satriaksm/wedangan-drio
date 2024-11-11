@@ -45,12 +45,19 @@ class UserController extends Controller
     {
         //validate form
         $request->validate([
-            'name' => 'required |max: 255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|confirmed|min:8',
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         //create user
         User::create([
             'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'img' => $request->file('img')->store('images/users', 'public'),
+            'role' => 2, // Set role to cashier by default
         ]);
 
         //redirect to index
@@ -84,17 +91,33 @@ class UserController extends Controller
     {
         //validate form
         $request->validate([
-            'name' => 'required | max: 255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'password' => 'required|string|confirmed|min:8',
+            'img' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
 
         ]);
 
         //get user by ID
         $user = User::findOrFail($id);
 
-        $user->update([
+        $data=[
             'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => 2, // Set role to cashier by default
+        ];
 
-        ]);
+        if ($request->hasFile('img')) {
+            //delete old image
+            if ($user->img) {
+                Storage::disk('public')->delete($user->img);
+            }
+            //store new image
+            $data['img'] = $request->file('img')->store('images/users', 'public');
+        }
+
+        $user->update($data);
 
         //redirect to index
         return redirect()->route('user.index')->with(['success' => 'Data Berhasil Diubah!']);

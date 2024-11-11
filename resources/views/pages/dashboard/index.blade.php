@@ -78,10 +78,10 @@
     </div>
     <div class="flex items-center order-1 md:order-2 w-full">
         <div class="w-full lg:w-auto">
-            <input type="date" class="border-transparent rounded-l-full sm:px-6 pl-6 sm:pl-auto focus:ring-secondary focus:border-secondary focus:text-secondary hover:border-secondary hover:text-secondary  shadow text-sm w-full">
+            <input type="date" class="border-transparent rounded-l-full sm:px-6 px-auto focus:ring-secondary focus:border-secondary focus:text-secondary hover:border-secondary hover:text-secondary  shadow text-sm w-full">
         </div>
         <div class="w-full lg:w-auto">
-            <input type="date" class="border-transparent rounded-r-full sm:px-6 pl-6 sm:pl-auto focus:ring-secondary focus:border-secondary focus:text-secondary hover:border-secondary hover:text-secondary  shadow text-sm w-full">
+            <input type="date" class="border-transparent rounded-r-full sm:px-6 px-auto focus:ring-secondary focus:border-secondary focus:text-secondary hover:border-secondary hover:text-secondary  shadow text-sm w-full">
         </div>
     </div>
 </div>

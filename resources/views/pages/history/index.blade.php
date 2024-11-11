@@ -1,23 +1,21 @@
 @extends('layouts.app')
 @section('title', 'Riwayat Penjualan')
 @section('content')
-<div class="flex gap-2 w-full">
+<div class="flex flex-wrap sm:flex-nowrap gap-2 w-full">
     <!-- Date range tetap sama -->
-    <div class="flex justify-between bg-primary p-1 rounded-xl text-white text-xs items-center min-w-[200px] max-w-[240px]">
-        <div class="p-1 flex gap-1 items-center hover:bg-secondary rounded">
-            <img src="{{ url('/images/assets/Date To.png') }}" alt="" class="h-5">
-            <h6>10-10-2024</h6>
+    <div class="flex justify-between bg-primary p-1 rounded-xl text-white text-xs items-center w-full sm:w-auto">
+        <div class="w-full lg:w-auto">
+            <input type="date" class="border-none bg-transparent sm:px-6 px-auto focus:ring-transparent focus:text-secondary  hover:text-secondary   text-sm w-full">
         </div>
-        <div class="p-1 flex gap-1 items-center hover:bg-secondary rounded">
-            <img src="{{ url('/images/assets/Schedule.png') }}" alt="" class="h-5">
-            <h6>10-11-2024</h6>
+        <div class="w-full lg:w-auto">
+            <input type="date" class="border-none bg-transparent sm:px-6 px-auto focus:ring-transparent focus:text-secondary  hover:text-secondary   text-sm w-full">
         </div>
     </div>
 
     <!-- Search section yang diperbaiki -->
     <div class="relative flex-1">
         <input type="search" id="search-dropdown"
-            class="w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-primary focus:ring-secondary focus:border-secondary"
+            class="w-full p-3 text-sm text-gray-900 bg-gray-50 rounded-lg border border-primary focus:ring-secondary focus:border-secondary"
             placeholder="Cari #" required />
         <button type="submit"
             class="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-primary rounded-e-lg border border-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300">

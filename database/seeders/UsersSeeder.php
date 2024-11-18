@@ -23,8 +23,5 @@ class UsersSeeder extends Seeder
 
             ],
         );
-
-        // Jika ingin menambah beberapa user lagi, bisa tambahkan di sini
-        // User::factory()->count(10)->create(); // contoh untuk data dummy
     }
 }

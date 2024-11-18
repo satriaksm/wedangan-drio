@@ -29,9 +29,8 @@ Route::middleware(['auth',AdminMiddleware::class])->group(function () {
         return view('pages.dashboard.index');
     })->name('dashboard');
 
-    Route::get('/history', function () {
-        return view('pages.history.index');
-    })->name('history');
+    Route::get('/history', [OrderController::class, 'index'])->name('history.index');
+    Route::get('/history/{id}', [OrderController::class, 'show'])->name('history.show');
 
     Route::get('/products', [ProductController::class, 'index'])->name('product.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('product.create');

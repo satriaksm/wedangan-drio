@@ -28,17 +28,9 @@ Route::middleware(['auth',AdminMiddleware::class])->group(function () {
         return view('pages.dashboard.index');
     })->name('dashboard');
 
-    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
-    Route::post('/transaction/pay', [TransactionController::class, 'pay'])->name('transaction.pay');
-    Route::post('/transaction/process', [TransactionController::class, 'process'])->name('transaction.process');
+    Route::get('/history', [OrderController::class, 'index'])->name('history.index');
+    Route::get('/history/{id}', [OrderController::class, 'show'])->name('history.show');
 
-    Route::get('/history', function () {
-        return view('pages.history.index');
-    })->name('history');
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/products', [ProductController::class, 'index'])->name('product.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('product.create');
@@ -63,7 +55,7 @@ Route::middleware(['auth',AdminMiddleware::class])->group(function () {
 });
 
 //Route Middleware CASHIER
-Route::middleware(['auth',CashierMiddleware::class])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::post('/transaction/pay', [TransactionController::class, 'pay'])->name('transaction.pay');
     Route::post('/transaction/process', [TransactionController::class, 'process'])->name('transaction.process');

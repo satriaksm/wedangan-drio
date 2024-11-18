@@ -1,34 +1,41 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\AdminMiddleware;
+use Illuminate\Support\Facades\Response;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Middleware\CashierMiddleware;
 
 Route::get('/', function () {
-    // Check if the user is authenticated
-    if (Auth::check()) {
-        return redirect()->route('dashboard'); // Redirect to dashboard if authenticated
+    // Check Role User
+    if (Auth::check() && Auth::user()->role == 1) {
+        return redirect()->route('dashboard'); // Redirect to dashboard if Admin
+    } else if (Auth::check() && Auth::user()->role == 2) {
+        return redirect()->route('transaction.index'); // Redirect to cashier dashboard if Cashier
     }
     return redirect()->route('login'); // Redirect to login if not authenticated
 });
 
-Route::get('/dashboard', function () {
-    return view('pages.dashboard.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/transaction', [ProductController::class, 'transaction'])
-->middleware(['auth', 'verified'])->name('transaction');
-Route::get('/transaction/pay', [ProductController::class, 'pay'])
-->middleware(['auth', 'verified'])->name('pay');
-Route::get('/history', function () {
-    return view('pages.history.index');
-})->middleware(['auth', 'verified'])->name('history');
+//Route Middleware ADMIN
+Route::middleware(['auth',AdminMiddleware::class])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('pages.dashboard.index');
+    })->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+    Route::post('/transaction/pay', [TransactionController::class, 'pay'])->name('transaction.pay');
+    Route::post('/transaction/process', [TransactionController::class, 'process'])->name('transaction.process');
+
+    Route::get('/history', function () {
+        return view('pages.history.index');
+    })->name('history');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -54,6 +61,18 @@ Route::middleware('auth')->group(function () {
     Route::put('/users/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 });
+
+//Route Middleware CASHIER
+Route::middleware(['auth',CashierMiddleware::class])->group(function () {
+    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+    Route::post('/transaction/pay', [TransactionController::class, 'pay'])->name('transaction.pay');
+    Route::post('/transaction/process', [TransactionController::class, 'process'])->name('transaction.process');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
 
 Route::get('/images/{folder}/{filename}', function ($folder, $filename) {
     $path = resource_path('images/' . $folder . '/' . $filename);

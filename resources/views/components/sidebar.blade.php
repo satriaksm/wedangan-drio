@@ -27,7 +27,7 @@
                     <x-slot name="trigger">
                         <button class="flex me-4 lg:me-8 items-center">
                             {{-- <div>{{ Auth::user()->name }}</div> --}}
-                                <img class="w-9 h-9 sm:h-12 sm:w-12 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user">
+                                <img class="w-9 h-9 sm:h-12 sm:w-12 rounded-full" src="{{ Auth::user()->img ? asset('storage/' . Auth::user()->img) : asset('https://flowbite.com/docs/images/people/profile-picture-5.jpg') }}" alt="user">
                         </button>
                     </x-slot>
 

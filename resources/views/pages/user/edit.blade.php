@@ -17,15 +17,25 @@
                 class="bg-gray-50 mb-2 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Rp 2000" required />
 
+
+            @error('password')
+                <div class="mb-2 p-3 text-red-700 bg-red-100 rounded-lg">
+                    <ul>
+                        <li class="list-disc list-inside">
+                            <span class="text-sm">{{ $message }}</span>
+                        </li>
+                    </ul>
+                </div>
+            @enderror
             <label for="password" class="block mb-2 text-sm font-medium text-black">Password</label>
             <input type="password" id="password" name="password"
                     class="bg-gray-50 mb-2 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="Masukkan Password Baru" required />
+                    placeholder="Masukkan Password Baru" />
 
-            <label for="password_confirm" class="block mb-2 text-sm font-medium text-black">Konfirmasi Password</label>
-            <input type="password" id="password_confirm" name="password_confirm"
+            <label for="password_confirmation" class="block mb-2 text-sm font-medium text-black">Konfirmasi Password</label>
+            <input type="password" id="password_confirmation" name="password_confirmation"
                 class="bg-gray-50 mb-2 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Tulis Ulang Password Baru" required />
+                placeholder="Tulis Ulang Password Baru"/>
 
             <label class="block mb-2 text-sm font-medium text-black" for="file_input">Upload Foto Profile Baru</label>
             <input
@@ -38,5 +48,6 @@
             <button type="submit"
                 class="focus:outline-none text-white bg-primary hover:bg-secondary focus:ring-4 focus:ring-green-300 rounded-lg text-sm sm:text-base px-5 py-2.5 me-2 mb-2 font-bold">Simpan</button>
         </form>
-    </div>
+
+            </div>
 @endsection

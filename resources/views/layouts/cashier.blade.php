@@ -14,7 +14,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('components.sidebar-cashier')
+            @include('components.sidebar-transaction')
         </div>
     </body>
 </html>

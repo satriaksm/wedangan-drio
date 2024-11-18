@@ -86,42 +86,48 @@ class UserController extends Controller
      * @param  mixed $request
      * @param  mixed $id
      * @return RedirectResponse
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //validate form
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'required|string|confirmed|min:8',
-            'img' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+     */public function update(Request $request, $id): RedirectResponse
+{
+    // Validasi dasar
+    $validationRules = [
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+        'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'password' => 'nullable|string|confirmed|min:8|required_with:password_confirmation',
+    ];
 
-        ]);
+    $request->validate($validationRules);
 
-        //get user by ID
-        $user = User::findOrFail($id);
+    // Get user
+    $user = User::findOrFail($id);
 
-        $data=[
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role' => 2, // Set role to cashier by default
-        ];
+    // Data dasar untuk update
+    $data = [
+        'name' => $request->name,
+        'email' => $request->email,
+    ];
 
-        if ($request->hasFile('img')) {
-            //delete old image
-            if ($user->img) {
-                Storage::disk('public')->delete($user->img);
-            }
-            //store new image
-            $data['img'] = $request->file('img')->store('images/users', 'public');
-        }
-
-        $user->update($data);
-
-        //redirect to index
-        return redirect()->route('user.index')->with(['success' => 'Data Berhasil Diubah!']);
+    // Update password hanya jika diisi
+    if ($request->filled('password')) {
+        $data['password'] = bcrypt($request->password);
     }
+
+    // Handle image upload
+    if ($request->hasFile('img')) {
+        // Delete old image
+        if ($user->img) {
+            Storage::disk('public')->delete($user->img);
+        }
+        // Store new image
+        $data['img'] = $request->file('img')->store('images/users', 'public');
+    }
+
+    // Update user
+    $user->update($data);
+
+    return redirect()->route('user.index')->with(['success' => 'Data Berhasil Diubah!']);
+}
+
 
     /**
      * destroy

@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class UserSeeder extends Seeder
+class UsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,13 +17,11 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert(
-            [
-                'name' => 'Administrator',
-                'role' => '1',
-                'email' => 'admin@gmail.com',
-                'password' => Hash::make('123123123'), // jangan lupa ganti password
-                'img' => 'images/users/fael.png',
-            ]
+            values: [
+            ['name' => 'Administrator', 'role' => '1', 'email' => 'admin@gmail.com', 'password' => Hash::make('123123123'), 'img' => 'images/users/fael.png',],
+            ['name' => 'Andri Wijaya', 'role' => '2', 'email' => 'andri@gmail.com', 'password' => Hash::make('123123123'), 'img' => 'images/users/andri.png',],
+
+            ],
         );
 
         // Jika ingin menambah beberapa user lagi, bisa tambahkan di sini

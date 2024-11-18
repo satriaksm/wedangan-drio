@@ -212,54 +212,73 @@
     </div>
 
                             <!-- Main modal -->
-                            <div id="payment-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                <div class="fixed inset-0 bg-black opacity-50 z-40"></div>
-                                <div class="relative p-4 w-full max-w-md max-h-full z-50">
-                                    <!-- Modal content -->
-                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                        <!-- Modal header -->
-                                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                            <h3 class="text-lg font-black text-primary dark:text-white">
-                                                Metode Pembayaran
-                                            </h3>
-                                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-secondary rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="payment-modal">
-                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                                </svg>
-                                                <span class="sr-only">Close modal</span>
-                                            </button>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <div class="p-4 md:p-5">
-                                            <p class="text-gray-500 dark:text-gray-400 mb-4">Pilih metode pembayaran yang diinginkan :</p>
-                                            <ul class="space-y-4 mb-4">
-                                                <li>
-                                                    <input type="radio" id="job-1" name="job" value="job-1" class="hidden peer" required />
-                                                    <label for="job-1" class="inline-flex items-center justify-between w-full p-5 text-secondary bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-primary peer-checked:text-primary hover:text-secondary hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
-                                                        <div class="block">
-                                                            <div class="w-full text-lg font-semibold">Cash</div>
-                                                            <div class="w-full text-gray-500 dark:text-gray-400">Tunai</div>
-                                                        </div>
-                                                        <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
-                                                    </label>
-                                                </li>
-                                                <li>
-                                                    <input type="radio" id="job-2" name="job" value="job-2" class="hidden peer">
-                                                    <label for="job-2" class="inline-flex items-center justify-between w-full p-5 text-secondary bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-primary peer-checked:text-primary hover:text-secondary hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
-                                                        <div class="block">
-                                                            <div class="w-full text-lg font-semibold">Non-cash</div>
-                                                            <div class="w-full text-gray-500 dark:text-gray-400">Qris</div>
-                                                        </div>
-                                                        <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
-                                                    </label>
-                                                </li>
-                                            </ul>
-                                            <button class="text-white inline-flex w-full justify-center bg-secondary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary dark:hover:bg-secondary dark:focus:ring-primary">
-                                                Next step
-                                            </button>
-                                        </div>
-                                    </div>
+<!-- Main modal -->
+<div id="payment-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="fixed inset-0 bg-black opacity-50 z-40"></div>
+    <div class="relative p-4 w-full max-w-md max-h-full z-50">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-black text-primary dark:text-white">
+                    Metode Pembayaran
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-secondary rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="payment-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form id="paymentForm" action="{{ route('transaction.pay') }}" method="POST">
+                @csrf
+                <input type="hidden" name="items" x-bind:value="JSON.stringify(selectedProducts)">
+                <input type="hidden" name="total" x-bind:value="total">
+
+                <div class="p-4 md:p-5">
+                    <p class="text-gray-500 dark:text-gray-400 mb-4">Pilih metode pembayaran yang diinginkan :</p>
+                    <ul class="space-y-4 mb-4">
+                        <li>
+                            <label for="cash" class="inline-flex items-center justify-between w-full p-5 text-secondary bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-primary peer-checked:text-primary hover:text-secondary hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
+                                <input type="radio" id="cash" name="payment_method" value="cash" class="hidden peer" required>
+                                <div class="block">
+                                    <div class="w-full text-lg font-semibold">Cash</div>
+                                    <div class="w-full text-gray-500 dark:text-gray-400">Tunai</div>
                                 </div>
-                            </div>
+                                <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+                            </label>
+                        </li>
+                        <li>
+                            <label for="qris" class="inline-flex items-center justify-between w-full p-5 text-secondary bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-primary peer-checked:text-primary hover:text-secondary hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
+                                <input type="radio" id="qris" name="payment_method" value="qris" class="hidden peer">
+                                <div class="block">
+                                    <div class="w-full text-lg font-semibold">Non-cash</div>
+                                    <div class="w-full text-gray-500 dark:text-gray-400">Qris</div>
+                                </div>
+                                <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
+                            </label>
+                        </li>
+                    </ul>
+
+                    <button
+                        type="submit"
+                        x-show="selectedProducts.length > 0"
+                        class="text-white inline-flex w-full justify-center bg-secondary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Next step
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+</div>
+<script>
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+    console.log('Form submitted');
+    console.log('Items:', this.elements['items'].value);
+    console.log('Total:', this.elements['total'].value);
+    console.log('Payment Method:', this.elements['payment_method'].value);
+});
+</script>
 @endsection

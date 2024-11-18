@@ -27,7 +27,7 @@
                     <x-slot name="trigger">
                         <button class="flex me-4 lg:me-8 items-center">
                             {{-- <div>{{ Auth::user()->name }}</div> --}}
-                                <img class="w-9 h-9 sm:h-12 sm:w-12 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user">
+                                <img class="w-9 h-9 sm:h-12 sm:w-12 rounded-full" src="{{ Auth::user()->img ? asset('storage/' . Auth::user()->img) : asset('https://flowbite.com/docs/images/people/profile-picture-5.jpg') }}" alt="user">
                         </button>
                     </x-slot>
 
@@ -58,6 +58,7 @@
   <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 pt-12 sm:pt-24 z-40 w-64 h-screen transition-transform -translate-x-full " aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto bg-primary  dark:bg-gray-800">
        <ul class="space-y-2 font-medium">
+        @if (Auth::user()->role == 1)
           <li>
              <a href="/dashboard" class="flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-secondary dark:hover:bg-gray-700 group">
                 <svg class="w-5 h-5 text-white   transition duration-75 dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
@@ -97,6 +98,7 @@
                 <span class="flex-1 ms-3 whitespace-nowrap">Riwayat Penjualan</span>
              </a>
           </li>
+          @elseif(Auth::user()->role == 2)
           <li>
              <a href="/transaction" class="flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-secondary dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-white     transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
@@ -105,6 +107,7 @@
                 <span class="flex-1 ms-3 whitespace-nowrap">Transaksi</span>
              </a>
           </li>
+          @endif
        </ul>
     </div>
  </aside>

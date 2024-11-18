@@ -25,21 +25,6 @@ class ProductController extends Controller
         //render view with products
         return view('pages.product.index', compact('products', 'categories'));
     }
-    public function transaction(): View
-    {
-        //get all products
-        $products = Product::with('category')->get();
-        $categories = Category::all();
-        return view('pages.transaction.index', compact('products','categories'));
-    }
-
-    public function pay(): View
-    {
-        //get all products
-        $products = Product::with('category')->get();
-        $categories = Category::all();
-        return view('pages.transaction.pay', compact('products','categories'));
-    }
 
     /**
      * create

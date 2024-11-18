@@ -6,28 +6,31 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\OrderController;
+use App\Http\Middleware\CashierMiddleware;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
-use App\Http\Middleware\CashierMiddleware;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
-    // Check Role User
-    if (Auth::check() && Auth::user()->role == 1) {
-        return redirect()->route('dashboard'); // Redirect to dashboard if Admin
-    } else if (Auth::check() && Auth::user()->role == 2) {
-        return redirect()->route('transaction.index'); // Redirect to cashier dashboard if Cashier
+    if (Auth::check()) {
+        if (Auth::user()->role == 1) {
+            return redirect()->route('dashboard.index');
+        } elseif (Auth::user()->role == 2) {
+            return redirect()->route('transaction.index');
+        }
     }
-    return redirect()->route('login'); // Redirect to login if not authenticated
+
+    // Redirect langsung ke login jika guest
+    return redirect()->route('login');
 });
 
 
 //Route Middleware ADMIN
 Route::middleware(['auth',AdminMiddleware::class])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('pages.dashboard.index');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('/history', [OrderController::class, 'index'])->name('history.index');
     Route::get('/history/{id}', [OrderController::class, 'show'])->name('history.show');

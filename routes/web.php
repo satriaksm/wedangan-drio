@@ -22,6 +22,7 @@ Route::get('/', function () {
     return redirect()->route('login'); // Redirect to login if not authenticated
 });
 
+
 //Route Middleware ADMIN
 Route::middleware(['auth',AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', function () {
@@ -30,7 +31,6 @@ Route::middleware(['auth',AdminMiddleware::class])->group(function () {
 
     Route::get('/history', [OrderController::class, 'index'])->name('history.index');
     Route::get('/history/{id}', [OrderController::class, 'show'])->name('history.show');
-
 
     Route::get('/products', [ProductController::class, 'index'])->name('product.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('product.create');

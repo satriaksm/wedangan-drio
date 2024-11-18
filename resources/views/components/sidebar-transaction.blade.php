@@ -98,7 +98,7 @@
                 <span class="flex-1 ms-3 whitespace-nowrap">Riwayat Penjualan</span>
              </a>
           </li>
-          @elseif(Auth::user()->role == 2)
+          @endif
           <li>
              <a href="/transaction" class="flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-secondary dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-white     transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
@@ -107,7 +107,7 @@
                 <span class="flex-1 ms-3 whitespace-nowrap">Transaksi</span>
              </a>
           </li>
-          @endif
+
        </ul>
     </div>
  </aside>

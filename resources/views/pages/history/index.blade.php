@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Riwayat Penjualan')
+@section('title', 'Riwayat Transaksi')
 @section('content')
 <div class="flex flex-wrap sm:flex-nowrap gap-2 w-full">
     <!-- Date range filter -->
@@ -51,9 +51,9 @@
                 <th scope="col" class="px-1 py-2 lg:px-6 lg:py-3 text-center capitalize">
                     Barang
                 </th>
-                <th scope="col" class="px-1 py-2 lg:px-6 lg:py-3 text-center capitalize hidden sm:block">
-                    Pembayaran
-                </th>
+                    <th scope="col" class="px-1 py-2 lg:px-6 lg:py-3 text-center capitalize hidden sm:block">
+                        Pembayaran
+                    </th>
                 <th scope="col" class="lg:table-cell px-1 py-2 lg:px-6 lg:py-3 text-center capitalize">
                     Tanggal
                 </th>
@@ -64,6 +64,9 @@
         </thead>
         <tbody>
             @foreach ($orders as $order)
+                @if (Auth::user()->role === 2 && $order->user_id !== Auth::id()) <!-- Pastikan cashier hanya melihat transaksinya -->
+                    @continue
+                @endif
                 <tr data-order-id="{{ $order->id }}" class="border-b dark:border-gray-700 cursor-pointer hover:bg-secondary hover:text-white" onclick="fetchOrderDetails({{ $order->id }})">
                     <td class="px-1 py-2 lg:py-4 text-center">{{ $order->id }}</td>
                     <td class="px-1 py-2 lg:px-6 lg:py-4 text-center min-w-24 max-w-16 sm:max-w-none">
@@ -141,10 +144,11 @@
                     </tr>`).join("");
 
                 detailsContainer.innerHTML = `
-                    <p class="text-base text-gray-500 dark:text-gray-400">
+                    <p class="text-base text-gray-500 dark:text-gray-400 capitalize">
                         Faktur: ${response.id} <br>
                         Kasir: ${response.cashier} <br>
-                        Jam: ${response.date}
+                        Jam: ${response.date} <br>
+                        Pembayaran: ${response.payment}
                     </p>
                     <table class="text-base text-gray-500 dark:text-gray-400 border-t border-b dark:border-gray-600 w-full">
                         ${itemsHtml}

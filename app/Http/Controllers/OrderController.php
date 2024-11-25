@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\SalesReportExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -21,21 +23,26 @@ class OrderController extends Controller
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date'
         ]);
+
         // Ambil rentang tanggal dan nomor faktur dari request
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $id = $request->input('id');
 
-        // Query untuk mengambil data berdasarkan filter
+        $user = Auth::user();
+
+        // Query untuk mengambil data berdasarkan filter, hanya transaksi yang ditangani oleh cashier
         $orders = Order::when($id, function ($query, $id) {
                 return $query->where('id', 'like', '%' . $id . '%');
             })
             ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
-                Log::info("Start Date: $startDate, End Date: $endDate");
                 return $query->whereBetween('created_at', [
                     Carbon::parse($startDate)->startOfDay(),
                     Carbon::parse($endDate)->endOfDay()
                 ]);
+            })
+            ->when($user->role_id === 2, function ($query) use ($user) { // Pastikan hanya cashier yang melihat transaksinya
+                return $query->where('user_id', $user->id);
             })
             ->with('orderItems') // Eager load order_items
             ->get();
@@ -44,31 +51,35 @@ class OrderController extends Controller
     }
 
 
+
     public function show($id)
-    {
-        try {
-            $order = Order::with('items.product', 'user')->findOrFail($id);
-            return response()->json([
-                'id' => $order->id,
-                'cashier' => $order->user->name,
-                'date' => $order->created_at->format('d-m-Y H:i'),
-                'total' => $order->total_price,
-                'items' => $order->items->map(function ($item) {
-                    return [
-                        'quantity' => $item->quantity,
-                        'name' => $item->product->name,
-                        'subtotal' => $item->subtotal_price,
-                    ];
-                }),
-            ]);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return response()->json([
-                'error' => 'Detail order tidak ditemukan',
-                'debug' => $e->getMessage()
-            ], 500);
-        }
+{
+    try {
+        // Mengambil order dengan relasi items dan product
+        $order = Order::with('items.product', 'user')->findOrFail($id);
+
+        return response()->json([
+            'id' => $order->id,
+            'cashier' => $order->user->name,
+            'date' => $order->created_at->format('d-m-Y H:i'),
+            'payment' => $order->payment_method, // Ambil langsung kolom payment_method
+            'total' => $order->total_price,
+            'items' => $order->items->map(function ($item) {
+                return [
+                    'quantity' => $item->quantity,
+                    'name' => $item->product->name,
+                    'subtotal' => $item->subtotal_price,
+                ];
+            }),
+        ]);
+    } catch (\Exception $e) {
+        Log::error($e->getMessage());
+        return response()->json([
+            'error' => 'Detail order tidak ditemukan',
+            'debug' => $e->getMessage()
+        ], 500);
     }
+}
 
 
     public function store(Request $request)
@@ -113,4 +124,11 @@ class OrderController extends Controller
 
         return response()->json(['message' => 'Order berhasil disimpan.'], 201);
     }
+
+
+    public function exportExcel()
+    {
+        return Excel::download(new SalesReportExport, 'sales_report.xlsx');
+    }
+
 }

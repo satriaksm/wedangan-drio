@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class TransactionController extends Controller
 {
@@ -50,16 +51,18 @@ class TransactionController extends Controller
 
     public function process(Request $request)
     {
-        $request->validate([
-            'items' => 'required|array',
-            'items.*.id' => 'required|exists:products,id',
-            'items.*.quantity' => 'required|integer|min:1',
-            'total' => 'required|numeric|min:0',
-            'payment_amount' => 'required|numeric|min:0',
-            'payment_method' => 'required|in:cash,qris'
-        ]);
+        Log::info('Request received:', $request->all()); // Add logging
 
         try {
+            $validated = $request->validate([
+                'items' => 'required|array',
+                'items.*.id' => 'required|exists:products,id',
+                'items.*.quantity' => 'required|integer|min:1',
+                'total' => 'required|numeric|min:0',
+                'payment_method' => 'required|string|in:cash,qris',
+                'payment_amount' => 'required|numeric|min:0'
+            ]);
+
             DB::beginTransaction();
 
             $user = Auth::user();
@@ -67,13 +70,14 @@ class TransactionController extends Controller
             // Create the order
             $order = Order::create([
                 'user_id' => $user->id,
-                'total_items' => $request->total,
-                'total_price' => $request->payment_amount,
+                'total_items' => collect($request->items)->sum('quantity'),
+                'total_price' => $request->total,
+                'payment_method' => $request->payment_method
             ]);
 
             // Create order items
             foreach ($request->items as $item) {
-                $product = Product::find($item['id']);
+                $product = Product::findOrFail($item['id']);
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item['id'],
@@ -90,8 +94,15 @@ class TransactionController extends Controller
                 'message' => 'Transaction processed successfully'
             ]);
 
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Transaction failed: ' . $e->getMessage()); // Add logging
             return response()->json([
                 'success' => false,
                 'message' => 'Transaction failed: ' . $e->getMessage()

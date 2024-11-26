@@ -7,6 +7,7 @@
         total: {{ $total }},
         amount: 0,
         displayAmount: '0',
+        paymentMethod: '{{ $paymentMethod }}', // Ensure this is set
         get change() {
             return Math.max(0, this.amount - this.total);
         },
@@ -48,7 +49,7 @@
                         items: this.items,
                         total: this.total,
                         payment_amount: this.amount,
-                        payment_method: 'cash'
+                        payment_method: this.paymentMethod
                     })
                 });
 

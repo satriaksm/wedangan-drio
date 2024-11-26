@@ -107,7 +107,6 @@
                 <span class="flex-1 ms-3 whitespace-nowrap">Transaksi</span>
              </a>
           </li>
-
        </ul>
     </div>
  </aside>

@@ -35,8 +35,7 @@ Route::middleware(['auth',AdminMiddleware::class])->group(function () {
     Route::get('/history', [OrderController::class, 'index'])->name('history.index');
     Route::get('/history/{id}', [OrderController::class, 'show'])->name('history.show');
     Route::get('/history/view/pdf', [OrderController::class, 'view_pdf']);
-    Route::get('/history/download/pdf', [OrderController::class, 'download_pdf'])->name('history.download_pdf');
-    Route::get('/history/export/excel', [OrderController::class, 'export_excel'])->name('history.download_excel');
+    Route::post('/history/export', [OrderController::class, 'export_transactions'])->name('history.export');
 
     Route::get('/products', [ProductController::class, 'index'])->name('product.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('product.create');

@@ -1,5 +1,5 @@
 <nav class="bg-primary border-gray-200 dark:bg-white fixed top-0 z-50 w-full border-b">
-    <div class="max-w-screen-3xl flex flex-wrap items-center justify-between py-2 sm:py-6 w-full px-2 lg:px-4 ">
+    <div class="max-w-screen-3xl flex flex-wrap items-center justify-between py-2 sm:py-3 w-full px-2 lg:px-4 ">
         <div class="flex gap-2">
             <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar"
             aria-controls="sidebar-multi-level-sidebar" type="button"
@@ -55,7 +55,7 @@
     </div>
   </nav>
 
-  <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 pt-12 sm:pt-24 z-40 w-64 h-screen transition-transform -translate-x-full " aria-label="Sidebar">
+  <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 pt-12 sm:pt-16 z-40 w-64 h-screen transition-transform -translate-x-full " aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto bg-primary  dark:bg-gray-800">
        <ul class="space-y-2 font-medium">
         @if (Auth::user()->role == 1)
@@ -112,7 +112,7 @@
  </aside>
 
 <div class="p-4">
-    <div class="px-4 py-1  sm:px-4 border-gray-200 rounded-lg dark:border-gray-700 mt-16 sm:mt-24">
+    <div class="px-4 py-1  sm:px-4 border-gray-200 rounded-lg dark:border-gray-700 mt-14 sm:mt-20">
         @yield('content')
     </div>
 </div>

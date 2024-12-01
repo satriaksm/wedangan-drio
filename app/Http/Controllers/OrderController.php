@@ -16,8 +16,8 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $startDate = $request->input('start_date', now()->format('Y-m-d'));
-        $endDate = $request->input('end_date', now()->format('Y-m-d'));
+        $startDate = $request->input('start_date', now()->format('m/d/Y'));
+        $endDate = $request->input('end_date', now()->format('m/d/Y'));
 
         $request->validate([
             'start_date' => 'nullable|date',
@@ -123,7 +123,7 @@ class OrderController extends Controller
         return response()->json(['message' => 'Order berhasil disimpan.'], 201);
     }
 
-    public function download_pdf(Request $request)
+    public function export_transactions(Request $request)
     {
         // Validasi input
         $request->validate([
@@ -131,58 +131,48 @@ class OrderController extends Controller
             'date' => 'required|date'
         ]);
 
-        // Inisialisasi query builder
-        $query = Order::query();
+        // Tentukan nama file berdasarkan filter
+        $filename = 'laporan_transaksi_' . $request->filter . '_' .
+                    Carbon::parse($request->date)->format('Y-m-d');
 
-        // Filter berdasarkan pilihan
-        switch ($request->filter) {
-            case 'daily':
-                $query->whereDate('created_at', $request->date);
-                $dateText = Carbon::parse($request->date)->format('d F Y');
-                break;
-            case 'weekly':
-                $startOfWeek = Carbon::parse($request->date)->startOfWeek();
-                $endOfWeek = Carbon::parse($request->date)->endOfWeek();
-                $query->whereBetween('created_at', [$startOfWeek, $endOfWeek]);
-                $dateText = $startOfWeek->format('d F Y') . ' - ' . $endOfWeek->format('d F Y');
-                break;
-            case 'monthly':
-                $query->whereMonth('created_at', Carbon::parse($request->date)->month)
-                    ->whereYear('created_at', Carbon::parse($request->date)->year);
-                $dateText = Carbon::parse($request->date)->format('F Y');
-                break;
+        // Cek aksi yang dipilih
+        if ($request->action === 'pdf') {
+            // Proses download PDF
+            $query = Order::query();
+
+            switch ($request->filter) {
+                case 'daily':
+                    $query->whereDate('created_at', $request->date);
+                    $dateText = Carbon::parse($request->date)->format('d F Y');
+                    break;
+                case 'weekly':
+                    $startOfWeek = Carbon::parse($request->date)->startOfWeek();
+                    $endOfWeek = Carbon::parse($request->date)->endOfWeek();
+                    $query->whereBetween('created_at', [$startOfWeek, $endOfWeek]);
+                    $dateText = $startOfWeek->format('d F Y') . ' - ' . $endOfWeek->format('d F Y');
+                    break;
+                case 'monthly':
+                    $query->whereMonth('created_at', Carbon::parse($request->date)->month)
+                        ->whereYear('created_at', Carbon::parse($request->date)->year);
+                    $dateText = Carbon::parse($request->date)->format('F Y');
+                    break;
+            }
+
+            $orders = $query->get();
+
+            $mpdf = new \Mpdf\Mpdf();
+            $mpdf->WriteHTML(view('pages.history.table', compact('orders', 'dateText'))->render());
+            $mpdf->Output($filename . '.pdf', 'D');
         }
-
-        // Ambil orders sesuai filter
-        $orders = $query->get();
-
-        // Buat PDF
-        $mpdf = new \Mpdf\Mpdf();
-        $mpdf->WriteHTML(view('pages.history.table', compact('orders', 'dateText'))->render());
-
-        // Tentukan nama file berdasarkan filter
-        $filename = 'laporan_transaksi_' . $request->filter . '_' .
-                    Carbon::parse($request->date)->format('Y-m-d') . '.pdf';
-
-        $mpdf->Output($filename, 'D');
+        else if ($request->action === 'excel') {
+            // Proses download Excel
+            return Excel::download(
+                new RiwayatTransaksiExport($request->filter, $request->date),
+                $filename . '.xlsx'
+            );
+        }
     }
 
-    public function export_excel(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'filter' => 'required|in:daily,weekly,monthly',
-            'date' => 'required|date'
-        ]);
 
-        // Tentukan nama file berdasarkan filter
-        $filename = 'laporan_transaksi_' . $request->filter . '_' .
-                    Carbon::parse($request->date)->format('Y-m-d') . '.xlsx';
-
-        return Excel::download(
-            new RiwayatTransaksiExport($request->filter, $request->date),
-            $filename
-        );
-    }
 
 }

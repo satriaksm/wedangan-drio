@@ -16,35 +16,44 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $startDate = $request->input('start_date', now()->format('m/d/Y'));
-        $endDate = $request->input('end_date', now()->format('m/d/Y'));
-
+        // Validasi input tanggal
         $request->validate([
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date'
         ]);
 
-        // Ambil rentang tanggal dan nomor faktur dari request
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        $id = $request->input('id');
+        // Default tanggal jika tidak ada input
+        $startDate = $request->input('start_date', now()->format('m/d/Y'));
+        $endDate = $request->input('end_date', now()->format('m/d/Y'));
 
+        // Ambil input filter
+        $id = $request->input('id');
         $user = Auth::user();
 
-        // Query untuk mengambil data berdasarkan filter, hanya transaksi yang ditangani oleh cashier
-        $orders = Order::when($id, function ($query, $id) {
-                return $query->where('id', 'like', '%' . $id . '%');
-            })
-            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
-                return $query->whereBetween('created_at', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay()
-                ]);
-            })
-            ->when($user->role_id === 2, function ($query) use ($user) { // Pastikan hanya cashier yang melihat transaksinya
-                return $query->where('user_id', $user->id);
-            })
-            ->with('orderItems') // Eager load order_items
+        // Query untuk mengambil data berdasarkan filter
+        $query = Order::query();
+
+        // Filter berdasarkan nomor faktur (ID)
+        if ($id) {
+            $query->where('id', 'like', '%' . $id . '%');
+        }
+
+        // Filter berdasarkan rentang tanggal
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [
+                Carbon::parse($startDate)->startOfDay(),
+                Carbon::parse($endDate)->endOfDay()
+            ]);
+        }
+
+        // Filter untuk user non-admin (role 2)
+        if ($user->role === 2) {
+            $query->where('user_id', $user->id);
+        }
+
+        // Eager load order items dan produk terkait
+        $orders = $query->with('orderItems.product')
+            ->latest()
             ->get();
 
         return view('pages.history.index', compact('orders'));

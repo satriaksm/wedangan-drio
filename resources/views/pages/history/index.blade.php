@@ -2,13 +2,14 @@
 @section('title', 'Riwayat Transaksi')
 @section('content')
 <div class="flex flex-wrap sm:flex-nowrap gap-2 w-full">
+    @if (Auth::user()->role == 1)
     <!-- Modal toggle -->
     <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="order-first block text-white bg-primary  hover:bg-secondary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
         <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M19 7h-1V2H6v5H5c-1.654 0-3 1.346-3 3v7c0 1.103.897 2 2 2h2v3h12v-3h2c1.103 0 2-.897 2-2v-7c0-1.654-1.346-3-3-3zM8 4h8v3H8V4zm8 16H8v-4h8v4zm4-3h-2v-3H6v3H4v-7c0-.551.449-1 1-1h14c.552 0 1 .449 1 1v7z"></path><path d="M14 10h4v2h-4z"></path></svg>
     </button>
     <!-- Date range filter -->
-
-    <form action="{{ route('history.index') }}" method="GET" class="order-3 flex justify-between bg-primary py-[1px] sm:py-0 ps-[1px] rounded-lg text-white text-xs items-center w-full sm:w-auto relative ">
+    @endif
+    <form action="{{ route('history.index') }}" method="GET" class="order-3 flex justify-between bg-primary py-[1px]  ps-[1px] rounded-lg text-white text-xs items-center w-full sm:w-auto relative ">
         <div id="date-range-picker" date-rangepicker class="flex items-center">
             <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -16,7 +17,7 @@
                         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                     </svg>
                 </div>
-                <input id="datepicker-range-start" name="start_date" type="text" value="{{ request('start_date', now()->format('m/d/Y')) }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start">
+                <input id="datepicker-range-start" name="start_date" type="text" value="{{ request('start_date', now()->format('m/d/Y')) }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start" autocomplete="off">
             </div>
             <span class="mx-2 text-white">to</span>
             <div class="relative">
@@ -25,7 +26,7 @@
                         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                     </svg>
                 </div>
-                <input id="datepicker-range-end" name="end_date" type="text" value="{{ request('end_date', now()->format('m/d/Y')) }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
+                <input id="datepicker-range-end" name="end_date" type="text" value="{{ request('end_date', now()->format('m/d/Y')) }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end" autocomplete="off">
             </div>
         </div>
         <button type="submit" class=" p-2.5 text-sm font-medium h-full text-white bg-primary rounded-e-lg border border-primary hover:border-secondary hover:bg-secondary focus:ring-4 focus:outline-none focus:ring-blue-300">
@@ -94,13 +95,20 @@
             @endforeach
         </tbody>
     </table>
+    @if (Auth::user()->role === 1)
     <div class="sticky bottom-0 left-0 right-0 flex justify-between px-4 sm:px-16 py-2 bg-primary text-white z-10">
         <h1 class="font-black text-xs sm:text-sm">Total Transaksi : {{ $orders->count() }}</h1>
         <h1 class="font-black text-xs sm:text-sm">Total Jumlah : Rp {{ number_format($orders->sum('total_price'), 0, ',', '.') }}</h1>
     </div>
+    @else
+    <div class="sticky bottom-0 left-0 right-0 flex justify-between px-4 sm:px-16 py-2 bg-primary text-white z-10">
+        <h1 class="font-black text-xs sm:text-sm">Total Transaksi : {{ $orders->where('user_id', Auth::id())->count() }}</h1>
+        <h1 class="font-black text-xs sm:text-sm">Total Jumlah : Rp {{ number_format($orders->where('user_id', Auth::id())->sum('total_price'), 0, ',', '.') }}</h1>
+    </div>
+    @endif
 </div>
 
-
+@if (Auth::user()->role == 1)
   <!-- Main modal -->
   <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="fixed inset-0 bg-black opacity-50 z-40"></div>
@@ -146,6 +154,7 @@
                             type="text"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                             placeholder="Pilih Tanggal"
+                            autocomplete="off"
                             required
                         >
                     </div>
@@ -180,6 +189,7 @@
         </div>
     </div>
 </div>
+@endif
 
 <!-- Main modal -->
 <div data-modal-target="order-modal" id="order-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">

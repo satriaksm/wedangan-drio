@@ -83,6 +83,26 @@
         <h1 class="font-black text-xs sm:text-sm">Total Transaksi : {{ $orders->count() }}</h1>
         <h1 class="font-black text-xs sm:text-sm">Total Jumlah : Rp {{ number_format($orders->sum('total_price'), 0, ',', '.') }}</h1>
     </div>
+
+    <form action="{{ route('history.download_pdf') }}" method="GET">
+        <select name="filter">
+            <option value="daily">Harian</option>
+            <option value="weekly">Mingguan</option>
+            <option value="monthly">Bulanan</option>
+        </select>
+        <input type="date" name="date" required>
+        <button type="submit">Download PDF</button>
+    </form>
+    <form action="{{ route('history.download_excel') }}" method="GET">
+        <select name="filter" required>
+            <option value="">Pilih Filter</option>
+            <option value="daily">Harian</option>
+            <option value="weekly">Mingguan</option>
+            <option value="monthly">Bulanan</option>
+        </select>
+        <input type="date" name="date" required>
+        <button type="submit">Ekspor Excel</button>
+    </form>
 </div>
 
 

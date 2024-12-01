@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use App\Exports\SalesReportExport;
+use App\Exports\RiwayatTransaksiExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
@@ -50,36 +50,34 @@ class OrderController extends Controller
         return view('pages.history.index', compact('orders'));
     }
 
-
-
     public function show($id)
-{
-    try {
-        // Mengambil order dengan relasi items dan product
-        $order = Order::with('items.product', 'user')->findOrFail($id);
+    {
+        try {
+            // Mengambil order dengan relasi items dan product
+            $order = Order::with('items.product', 'user')->findOrFail($id);
 
-        return response()->json([
-            'id' => $order->id,
-            'cashier' => $order->user->name,
-            'date' => $order->created_at->format('d-m-Y H:i'),
-            'payment' => $order->payment_method, // Ambil langsung kolom payment_method
-            'total' => $order->total_price,
-            'items' => $order->items->map(function ($item) {
-                return [
-                    'quantity' => $item->quantity,
-                    'name' => $item->product->name,
-                    'subtotal' => $item->subtotal_price,
-                ];
-            }),
-        ]);
-    } catch (\Exception $e) {
-        Log::error($e->getMessage());
-        return response()->json([
-            'error' => 'Detail order tidak ditemukan',
-            'debug' => $e->getMessage()
-        ], 500);
+            return response()->json([
+                'id' => $order->id,
+                'cashier' => $order->user->name,
+                'date' => $order->created_at->format('d-m-Y H:i'),
+                'payment' => $order->payment_method, // Ambil langsung kolom payment_method
+                'total' => $order->total_price,
+                'items' => $order->items->map(function ($item) {
+                    return [
+                        'quantity' => $item->quantity,
+                        'name' => $item->product->name,
+                        'subtotal' => $item->subtotal_price,
+                    ];
+                }),
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'error' => 'Detail order tidak ditemukan',
+                'debug' => $e->getMessage()
+            ], 500);
+        }
     }
-}
 
 
     public function store(Request $request)
@@ -125,10 +123,66 @@ class OrderController extends Controller
         return response()->json(['message' => 'Order berhasil disimpan.'], 201);
     }
 
-
-    public function exportExcel()
+    public function download_pdf(Request $request)
     {
-        return Excel::download(new SalesReportExport, 'sales_report.xlsx');
+        // Validasi input
+        $request->validate([
+            'filter' => 'required|in:daily,weekly,monthly',
+            'date' => 'required|date'
+        ]);
+
+        // Inisialisasi query builder
+        $query = Order::query();
+
+        // Filter berdasarkan pilihan
+        switch ($request->filter) {
+            case 'daily':
+                $query->whereDate('created_at', $request->date);
+                $dateText = Carbon::parse($request->date)->format('d F Y');
+                break;
+            case 'weekly':
+                $startOfWeek = Carbon::parse($request->date)->startOfWeek();
+                $endOfWeek = Carbon::parse($request->date)->endOfWeek();
+                $query->whereBetween('created_at', [$startOfWeek, $endOfWeek]);
+                $dateText = $startOfWeek->format('d F Y') . ' - ' . $endOfWeek->format('d F Y');
+                break;
+            case 'monthly':
+                $query->whereMonth('created_at', Carbon::parse($request->date)->month)
+                    ->whereYear('created_at', Carbon::parse($request->date)->year);
+                $dateText = Carbon::parse($request->date)->format('F Y');
+                break;
+        }
+
+        // Ambil orders sesuai filter
+        $orders = $query->get();
+
+        // Buat PDF
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML(view('pages.history.table', compact('orders', 'dateText'))->render());
+
+        // Tentukan nama file berdasarkan filter
+        $filename = 'laporan_transaksi_' . $request->filter . '_' .
+                    Carbon::parse($request->date)->format('Y-m-d') . '.pdf';
+
+        $mpdf->Output($filename, 'D');
+    }
+
+    public function export_excel(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'filter' => 'required|in:daily,weekly,monthly',
+            'date' => 'required|date'
+        ]);
+
+        // Tentukan nama file berdasarkan filter
+        $filename = 'laporan_transaksi_' . $request->filter . '_' .
+                    Carbon::parse($request->date)->format('Y-m-d') . '.xlsx';
+
+        return Excel::download(
+            new RiwayatTransaksiExport($request->filter, $request->date),
+            $filename
+        );
     }
 
 }

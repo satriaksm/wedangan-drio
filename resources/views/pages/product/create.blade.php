@@ -8,7 +8,7 @@
             <label for="name" class="block mb-2 text-sm font-medium text-black">Nama Produk</label>
             <input type="text" id="name" name="name"
                 class="mb-2 bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="John" required />
+                placeholder="Masukan nama produk" required />
 
             <label for="category_id" class="block mb-2 text-sm font-medium text-black">Pilih Kategori</label>
             <select id="category_id" name="category_id"

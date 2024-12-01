@@ -9,22 +9,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\RiwayatTransaksiExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $startDate = $request->input('start_date', now()->format('Y-m-d'));
-        $endDate = $request->input('end_date', now()->format('Y-m-d'));
-
+        // Validasi input tanggal
         $request->validate([
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date'
         ]);
-        // Ambil rentang tanggal dan nomor faktur dari request
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
+
+        // Default tanggal jika tidak ada input
+        $startDate = $request->input('start_date', now()->format('m/d/Y'));
+        $endDate = $request->input('end_date', now()->format('m/d/Y'));
+
+        // Ambil input filter
         $id = $request->input('id');
+        $user = Auth::user();
 
         // Query untuk mengambil data berdasarkan filter
         $orders = Order::when($id, function ($query, $id) {
@@ -46,11 +50,14 @@ class OrderController extends Controller
     public function show($id)
     {
         try {
+            // Mengambil order dengan relasi items dan product
             $order = Order::with('items.product', 'user')->findOrFail($id);
+
             return response()->json([
                 'id' => $order->id,
                 'cashier' => $order->user->name,
                 'date' => $order->created_at->format('d-m-Y H:i'),
+                'payment' => $order->payment_method, // Ambil langsung kolom payment_method
                 'total' => $order->total_price,
                 'items' => $order->items->map(function ($item) {
                     return [

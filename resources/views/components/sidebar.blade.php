@@ -1,5 +1,5 @@
 <nav class="bg-primary border-gray-200 dark:bg-white fixed top-0 z-50 w-full border-b">
-    <div class="max-w-screen-3xl flex flex-wrap items-center justify-between py-2 sm:py-6 w-full px-2 lg:px-4 ">
+    <div class="max-w-screen-3xl flex flex-wrap items-center justify-between py-2 sm:py-3 w-full px-2 lg:px-4 ">
         <div class="flex gap-2">
             <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar"
             aria-controls="sidebar-multi-level-sidebar" type="button"
@@ -55,7 +55,7 @@
     </div>
   </nav>
 
-  <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 pt-12 sm:pt-24 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0" aria-label="Sidebar">
+  <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 pt-14 sm:pt-16 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0" aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto bg-primary  dark:bg-gray-800">
        <ul class="space-y-2 font-medium">
         @if (Auth::user()->role == 1)
@@ -90,15 +90,15 @@
                    </li>
              </ul>
           </li>
+          @endif
           <li>
              <a href="/history" class="flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-secondary dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-white     transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                     <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
                  </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Riwayat Penjualan</span>
+                <span class="flex-1 ms-3 whitespace-nowrap">Riwayat Transaksi</span>
              </a>
           </li>
-          @endif
           <li>
              <a href="/transaction" class="flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-secondary dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-white     transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
@@ -112,7 +112,7 @@
  </aside>
 
 <div class="p-4 lg:ml-64">
-    <div class="px-4 py-1  sm:px-4 sm:py-12 border-gray-200 rounded-lg dark:border-gray-700 mt-14">
+    <div class="px-4 py-1  sm:px-4 sm:py-12 border-gray-200 rounded-lg dark:border-gray-700 mt-14 sm:mt-10">
         @yield('content')
     </div>
 </div>

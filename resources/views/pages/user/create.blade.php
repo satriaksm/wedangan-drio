@@ -8,7 +8,7 @@
             <label for="name" class="block mb-2 text-sm font-medium text-black">Nama</label>
             <input type="text" id="name" name="name"
                 class="mb-2 bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Raffael Aldrich S." required />
+                placeholder="John Doe" required />
 
             <!-- Hidden input to set role to cashier (role ID: 2) -->
             <input type="hidden" id="role" name="role" value="2">

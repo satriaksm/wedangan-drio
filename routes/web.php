@@ -12,7 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Models\OrderItem;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -29,11 +29,13 @@ Route::get('/', function () {
 
 
 //Route Middleware ADMIN
-Route::middleware(['auth',AdminMiddleware::class])->group(function () {
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('/history', [OrderController::class, 'index'])->name('history.index');
     Route::get('/history/{id}', [OrderController::class, 'show'])->name('history.show');
+    Route::get('/history/view/pdf', [OrderController::class, 'view_pdf']);
+    Route::post('/history/export', [OrderController::class, 'export_transactions'])->name('history.export');
 
     Route::get('/products', [ProductController::class, 'index'])->name('product.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('product.create');
@@ -60,12 +62,16 @@ Route::middleware(['auth',AdminMiddleware::class])->group(function () {
 //Route Middleware CASHIER
 Route::middleware(['auth'])->group(function () {
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+    Route::get('/transaction/pay', [TransactionController::class, 'pay'])->name('transaction.pay');
     Route::post('/transaction/pay', [TransactionController::class, 'pay'])->name('transaction.pay');
     Route::post('/transaction/process', [TransactionController::class, 'process'])->name('transaction.process');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/history', [OrderController::class, 'index'])->name('history.index');
+    Route::get('/history/{id}', [OrderController::class, 'show'])->name('history.show');
 });
 
 
@@ -79,4 +85,4 @@ Route::get('/images/{folder}/{filename}', function ($folder, $filename) {
     return Response::file($path); // Mengembalikan file gambar
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

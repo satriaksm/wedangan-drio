@@ -45,16 +45,16 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2">
         <template x-for="user in filteredusers" :key="user.id">
             <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <div class="flex justify-end px-4 pt-4">
-                </div>
-                <div class="flex flex-col items-center pb-10">
-                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" :src="user.image" :alt="user.name"/>
-                    <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white" x-text="user.name"></h5>
+                <div class="flex flex-col items-center pb-4 pt-4 sm:pb-6 sm:pt-6">
+                    <img class="w-16 h-16 sm:w-24 sm:h-24 mb-3 rounded-full shadow-lg" :src="user.image" :alt="user.name"/>
+                    <h5 class="mb-1 text-base sm:text-xl font-medium text-gray-900 dark:text-white" x-text="user.name"></h5>
                     <span class="text-sm text-gray-500 dark:text-gray-400" x-text="getRoleDescription(user.role)"></span>
                     <div class="flex mt-2 md:mt-4 gap-2">
                         <a :href="'/users/' + user.id + '/edit'"
-                           class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                           Edit
+                           class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-yellow-400 rounded-lg hover:bg-yellow-300 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="w-3 h-3 md:w-6 md:h-6 mx-auto">
+                            <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
+                            </svg>
                         </a>
                         <button :data-modal-target="'popup-modal-' + user.id" :data-modal-toggle="'popup-modal-' + user.id"
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">
@@ -80,16 +80,16 @@
                             <svg class="mx-auto mb-4 text-primary w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                             </svg>
-                            <h3 class="mb-5 text-lg font-normal text-primary dark:text-primary">Are you sure you want to delete this user?</h3>
+                            <h3 class="mb-5 text-lg font-normal text-primary dark:text-primary">Yakin ingin mengapus user <span x-text="user.name"></h3>
                             <form :action="'/users/' + user.id" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-500 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                                    Yes, I'm sure
+                                    Ya, Saya yakin
                                 </button>
                             </form>
                             <button :data-modal-hide="'popup-modal-' + user.id" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-secondary focus:outline-none bg-white rounded-lg border border-secondary hover:bg-secondary hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-primary dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                No, cancel
+                                Tidak, Kembali
                             </button>
                         </div>
                     </div>

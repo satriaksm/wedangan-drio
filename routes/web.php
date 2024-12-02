@@ -62,6 +62,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 //Route Middleware CASHIER
 Route::middleware(['auth'])->group(function () {
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+    Route::get('/transaction/pay', [TransactionController::class, 'pay'])->name('transaction.pay');
     Route::post('/transaction/pay', [TransactionController::class, 'pay'])->name('transaction.pay');
     Route::post('/transaction/process', [TransactionController::class, 'process'])->name('transaction.process');
 

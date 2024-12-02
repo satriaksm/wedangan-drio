@@ -261,94 +261,77 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <form id="paymentForm" action="{{ route('transaction.process') }}" method="POST">
+                    <form id="paymentForm" class="p-4 md:p-5"
+                        x-data="{
+                            showCashInput: false,
+                            cashAmount: '',
+                            paymentMethod: 'cash',
+                            get isValid() {
+                                if (this.paymentMethod === 'cash') {
+                                    return this.cashAmount && parseFloat(this.cashAmount) >= total;
+                                }
+                                return true; // For QRIS, no amount validation needed
+                            }
+                        }">
                         @csrf
-                        <input type="hidden" name="items" x-bind:value="JSON.stringify(selectedProducts)">
-                        <input type="hidden" name="total" x-bind:value="total">
-                        <input type="hidden" name="payment_method" x-model="paymentMethod">
+                        <p class="text-gray-500 dark:text-gray-400 mb-4">Pilih metode pembayaran yang diinginkan :</p>
+                        <ul class="space-y-4 mb-4">
+                            <li>
+                                <label for="cash" class="inline-flex items-center justify-between w-full p-5 text-secondary bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-primary peer-checked:text-primary hover:bg-gray-100">
+                                    <div class="block">
+                                        <div class="w-full text-lg font-semibold">Cash</div>
+                                        <div class="w-full text-gray-500">Tunai</div>
+                                    </div>
+                                    <input type="radio" id="cash" name="payment_method" value="cash"
+                                        x-model="paymentMethod"
+                                        @change="showCashInput = (paymentMethod === 'cash')">
+                                </label>
+                                <!-- Cash Input Field -->
+                                <div x-show="showCashInput" class="mt-3 px-5">
+                                    <label class="block text-sm font-medium text-gray-700">Jumlah Uang</label>
+                                    <input type="number"
+                                        x-model="cashAmount"
+                                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                        placeholder="Masukkan jumlah uang">
+                                    <div x-show="cashAmount && parseFloat(cashAmount) < total" class="text-red-500 text-sm mt-1">
+                                        Jumlah uang kurang dari total belanja
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <label for="qris" class="inline-flex items-center justify-between w-full p-5 text-secondary bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-primary peer-checked:text-primary hover:bg-gray-100">
+                                    <div class="block">
+                                        <div class="w-full text-lg font-semibold">Non-cash</div>
+                                        <div class="w-full text-gray-500">Qris</div>
+                                    </div>
+                                    <input type="radio" id="qris" name="payment_method" value="qris" x-model="paymentMethod">
+                                </label>
+                            </li>
+                        </ul>
 
-                        <div class="p-4 md:p-5">
-                            <p class="text-gray-500 dark:text-gray-400 mb-4">Pilih metode pembayaran yang diinginkan :</p>
-                            <ul class="space-y-4 mb-4">
-                                <li>
-                                    <label for="cash"
-                                        class="inline-flex items-center justify-between w-full p-5 text-secondary bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-primary peer-checked:text-primary hover:text-secondary hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
-                                        <div class="block">
-                                            <div class="w-full text-lg font-semibold">Cash</div>
-                                            <div class="w-full text-gray-500 dark:text-gray-400">Tunai</div>
-                                        </div>
-                                        <input type="radio" id="cash" name="payment_method" value="cash"
-                                            class="" required x-model="paymentMethod">
-                                    </label>
-                                </li>
-                                <li>
-                                    <label for="qris"
-                                        class="inline-flex items-center justify-between w-full p-5 text-secondary bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-primary peer-checked:text-primary hover:text-secondary hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
-                                        <input type="radio" id="qris" name="payment_method" value="qris"
-                                            class="hidden peer" x-model="paymentMethod">
-                                        <div class="block">
-                                            <div class="w-full text-lg font-semibold">Non-cash</div>
-                                            <div class="w-full text-gray-500 dark:text-gray-400">Qris</div>
-                                        </div>
-                                        <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400"
-                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 14 10">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                        </svg>
-                                    </label>
-                                </li>
-                            </ul>
-
-                            <button type="submit" x-show="selectedProducts.length > 0"
-                                class="text-white inline-flex w-full justify-center bg-secondary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                Next step
-                            </button>
-                        </div>
+                        <button type="submit"
+                            x-show="selectedProducts.length > 0"
+                            :disabled="!isValid"
+                            @click.prevent="
+                                if (paymentMethod === 'cash') {
+                                    window.location.href = '{{ route('transaction.pay') }}?' + new URLSearchParams({
+                                        items: JSON.stringify(selectedProducts),
+                                        total: total,
+                                        payment_method: paymentMethod,
+                                        cash_amount: cashAmount
+                                    });
+                                } else if (paymentMethod === 'qris') {
+                                    processQrisPayment();
+                                }
+                            "
+                            class="text-white inline-flex w-full justify-center"
+                            :class="isValid ? 'bg-secondary hover:bg-primary' : 'bg-gray-400'"
+                            >
+                            Lanjutkan
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent default form submission
-
-            const formData = {
-                items: JSON.parse(this.elements['items'].value),
-                total: parseFloat(this.elements['total'].value),
-                payment_method: this.elements['payment_method'].value,
-                payment_amount: parseFloat(this.elements['total'].value), // Add payment_amount
-                _token: this.elements['_token'].value
-            };
-
-            fetch('{{ route('transaction.process') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',  // Tambahkan ini
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')  // Perbaiki ini
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert('Transaksi berhasil!');
-                    window.location.href = '{{ route('transaction.index') }}';
-                } else {
-                    alert('Transaksi gagal: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);  // Tambahkan log error
-                alert('Terjadi kesalahan dalam pemrosesan transaksi');
-            });
-        });
-    </script>
 @endsection

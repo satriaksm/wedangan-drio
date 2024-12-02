@@ -1,91 +1,93 @@
 @extends('layouts.cashier')
-@section('title', 'Bayar')
+@section('title', 'Konfirmasi Pembayaran')
 @section('content')
-<div class="flex flex-col justify-between h-[85vh]"
-    x-data="{
-        items: @json($items),
-        total: {{ $total }},
-        amount: 0,
-        displayAmount: '0',
-        paymentMethod: '{{ $paymentMethod }}', // Ensure this is set
-        get change() {
-            return Math.max(0, this.amount - this.total);
-        },
-        formatCurrency(value) {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
-        },
-        formatNumber(value) {
-            return new Intl.NumberFormat('id-ID').format(value);
-        },
-        setAmount(value) {
-            this.amount = value;
-            this.displayAmount = this.formatNumber(value);
-        },
-        handleInput(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            value = parseInt(value) || 0;
-            this.amount = value;
-            this.displayAmount = this.formatNumber(value);
-        },
-        async processPayment() {
-            if (this.amount < this.total) {
-                alert('Jumlah pembayaran kurang dari total belanja');
-                return;
-            }
+<div class="min-h-screen bg-gray-100 py-6">
+    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6 text-primary">Konfirmasi Pembayaran</h1>
 
-            try {
-                const response = await fetch('{{ route('transaction.process') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        items: this.items,
-                        total: this.total,
-                        payment_amount: this.amount,
-                        payment_method: this.paymentMethod
-                    })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    alert('Pembayaran berhasil!\nKembalian: ' + this.formatCurrency(this.change));
-                    window.location.href = '{{ route('transaction.index') }}';
-                } else {
-                    alert('Pembayaran gagal: ' + result.message);
-                }
-            } catch (error) {
-                alert('Terjadi kesalahan: ' + error.message);
-            }
-        }
-    }">
-
-    <div>
-        <button class="flex justify-between w-full px-4 py-2 bg-primary rounded-full text-white hover:bg-secondary">
-            <div x-text="formatCurrency(total)"></div>
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
+        <!-- Order Details -->
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold mb-3">Rincian Pesanan</h2>
+            <div class="space-y-2">
+                @foreach($items as $item)
+                    <div class="flex justify-between py-2 border-b">
+                        <span>{{ $item['product']->name }} x {{ $item['quantity'] }}</span>
+                        <span>Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</span>
+                    </div>
+                @endforeach
             </div>
-        </button>
 
-        <!-- Rest of your existing payment view code -->
+            <!-- Payment Details -->
+            <div class="mt-4 pt-4 border-t">
+                <div class="flex justify-between font-semibold">
+                    <span>Total:</span>
+                    <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Dibayar:</span>
+                    <span>Rp {{ number_format($cashAmount, 0, ',', '.') }}</span>
+                </div>
+                <div class="flex justify-between font-bold text-lg">
+                    <span>Kembalian:</span>
+                    <span>Rp {{ number_format($cashAmount - $total, 0, ',', '.') }}</span>
+                </div>
+            </div>
+        </div>
 
-        <!-- Update the payment button -->
-        <button
-            @click="processPayment()"
-            class="bg-primary w-full rounded-full text-white font-bold text-xl text-center hover:bg-secondary"
-            :disabled="amount < total">
-            <h3 class="py-2">Bayar</h3>
-        </button>
+        <!-- Action Buttons -->
+        <div class="flex justify-end space-x-4">
+            <a href="{{ route('transaction.index') }}"
+               class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+                Batal
+            </a>
+            <button onclick="processPayment()"
+                    class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-secondary">
+                Selesaikan Pembayaran
+            </button>
+        </div>
     </div>
 </div>
+
+<script>
+function processPayment() {
+    // Format the items data correctly
+    const formattedItems = @json($items).map(item => ({
+        id: item.product.id,
+        quantity: item.quantity,
+        price: item.product.selling_price
+    }));
+
+    const data = {
+        items: formattedItems,
+        total: {{ $total }},
+        payment_method: '{{ $paymentMethod }}',
+        payment_amount: {{ $cashAmount }},
+        _token: '{{ csrf_token() }}'
+    };
+
+    fetch('{{ route('transaction.process') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Pembayaran berhasil!\nKembalian: Rp ' +
+                  new Intl.NumberFormat('id-ID').format({{ $cashAmount }} - {{ $total }}));
+            window.location.href = '{{ route('transaction.index') }}';
+        } else {
+            alert('Pembayaran gagal: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan dalam pemrosesan pembayaran');
+    });
+}
+</script>
 @endsection

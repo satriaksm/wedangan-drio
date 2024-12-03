@@ -143,10 +143,10 @@
 
     @if (Auth::user()->role == 1)
         <!-- Main modal -->
-        <div id="default-modal" tabindex="-1" aria-hidden="true"
+        <div id="default-modal" tabindex="-1" aria-hidden="true" data-modal-target="default-modal"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="fixed inset-0 bg-black opacity-50 z-40"></div>
-            <div class="relative p-4 w-full max-w-2xl max-h-full z-50">
+            <div class="relative p-4 w-full max-w-md z-50 pt-12">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <!-- Modal header -->
@@ -220,15 +220,15 @@
         </div>
     @endif
 
-    <!-- Main modal -->
+        <!-- Main modal -->
     <div data-modal-target="order-modal" id="order-modal" tabindex="-1" aria-hidden="true"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full">
         <!-- Overlay Background -->
         <div class="fixed inset-0 bg-black opacity-50 z-40"></div>
         <!-- Modal Container -->
         <div class="relative p-4 w-full max-w-2xl max-h-full z-50 mx-auto">
             <!-- Modal content -->
-            <div class="relative rounded-lg shadow dark:bg-gray-700 bg-white">
+            <div class="relative rounded-lg shadow dark:bg-gray-700 bg-white ">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -260,12 +260,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
     <script>
         function fetchOrderDetails(orderId) {
             // Show modal
             const modal = document.getElementById("order-modal");
             modal.classList.remove("hidden");
+            modal.classList.add("flex");
     
             // Display loading text
             const detailsContainer = document.getElementById("order-details");

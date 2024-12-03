@@ -23,6 +23,7 @@
                     <span>Total:</span>
                     <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
                 </div>
+                @if($paymentMethod === 'cash')
                 <div class="flex justify-between">
                     <span>Dibayar:</span>
                     <span>Rp {{ number_format($cashAmount, 0, ',', '.') }}</span>
@@ -31,6 +32,16 @@
                     <span>Kembalian:</span>
                     <span>Rp {{ number_format($cashAmount - $total, 0, ',', '.') }}</span>
                 </div>
+                @else
+                <div class="flex justify-between">
+                    <span>Metode Pembayaran:</span>
+                    <span>QRIS</span>
+                </div>
+                <div class="flex justify-between font-bold text-lg">
+                    <span>Status:</span>
+                    <span class="text-green-600">Lunas</span>
+                </div>
+                @endif
             </div>
         </div>
 

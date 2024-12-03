@@ -237,7 +237,6 @@
         </div>
 
         <!-- Main modal -->
-        <!-- Main modal -->
         <div id="payment-modal" tabindex="-1" aria-hidden="true"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="fixed inset-0 bg-black opacity-50 z-40"></div>
@@ -264,13 +263,14 @@
                     <form id="paymentForm" class="p-4 md:p-5"
                         x-data="{
                             showCashInput: false,
+                            showQris: false,
                             cashAmount: '',
-                            paymentMethod: 'cash',
+                            paymentMethod: '', // Remove default value
                             get isValid() {
                                 if (this.paymentMethod === 'cash') {
                                     return this.cashAmount && parseFloat(this.cashAmount) >= total;
                                 }
-                                return true; // For QRIS, no amount validation needed
+                                return true;
                             }
                         }">
                         @csrf
@@ -284,7 +284,7 @@
                                     </div>
                                     <input type="radio" id="cash" name="payment_method" value="cash"
                                         x-model="paymentMethod"
-                                        @change="showCashInput = (paymentMethod === 'cash')">
+                                        @change="showCashInput = true; showQris = false">
                                 </label>
                                 <!-- Cash Input Field -->
                                 <div x-show="showCashInput" class="mt-3 px-5">
@@ -304,30 +304,35 @@
                                         <div class="w-full text-lg font-semibold">Non-cash</div>
                                         <div class="w-full text-gray-500">Qris</div>
                                     </div>
-                                    <input type="radio" id="qris" name="payment_method" value="qris" x-model="paymentMethod">
+                                    <input type="radio" id="qris" name="payment_method" value="qris"
+                                        x-model="paymentMethod"
+                                        @change="showCashInput = false; showQris = true">
                                 </label>
                             </li>
                         </ul>
 
+                        <!-- QRIS Image -->
+                        <div x-show="showQris" class="mt-4 text-center">
+                            <img src="{{ asset('storage/images/qris.jpg') }}" alt="QRIS Code" class="mx-auto max-w-full h-auto">
+                            <p class="mt-2 text-sm text-gray-600">Scan QRIS code untuk melakukan pembayaran</p>
+                        </div>
+
                         <button type="submit"
                             x-show="selectedProducts.length > 0"
-                            :disabled="!isValid"
+                            :disabled="!isValid || !paymentMethod"
                             @click.prevent="
-                                if (paymentMethod === 'cash') {
-                                    window.location.href = '{{ route('transaction.pay') }}?' + new URLSearchParams({
-                                        items: JSON.stringify(selectedProducts),
-                                        total: total,
-                                        payment_method: paymentMethod,
-                                        cash_amount: cashAmount
-                                    });
-                                } else if (paymentMethod === 'qris') {
-                                    processQrisPayment();
-                                }
+                                const params = new URLSearchParams({
+                                    items: JSON.stringify(selectedProducts),
+                                    total: total,
+                                    payment_method: paymentMethod,
+                                    cash_amount: paymentMethod === 'cash' ? cashAmount : total
+                                });
+                                window.location.href = '{{ route('transaction.pay') }}?' + params;
                             "
-                            class="text-white inline-flex w-full justify-center"
-                            :class="isValid ? 'bg-secondary hover:bg-primary' : 'bg-gray-400'"
+                            class="text-white inline-flex w-full justify-center mt-4"
+                            :class="isValid && paymentMethod ? 'bg-secondary hover:bg-primary' : 'bg-gray-400'"
                             >
-                            Lanjutkan
+                            <span x-text="paymentMethod === 'cash' ? 'Lanjutkan Pembayaran' : 'Konfirmasi Pembayaran QRIS'"></span>
                         </button>
                     </form>
                 </div>

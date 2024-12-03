@@ -54,6 +54,7 @@ class OrderController extends Controller
                 'cashier' => $order->user->name,
                 'date' => $order->created_at->format('d-m-Y H:i'),
                 'total' => $order->total_price,
+                'payment' => $order->payment_method,
                 'items' => $order->items->map(function ($item) {
                     return [
                         'quantity' => $item->quantity,

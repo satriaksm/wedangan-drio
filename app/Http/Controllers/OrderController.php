@@ -16,45 +16,58 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        // Validasi input tanggal
+        $startDate = $request->input('start_date', now()->format('Y-m-d'));
+        $endDate = $request->input('end_date', now()->format('Y-m-d'));
+
         $request->validate([
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date'
         ]);
 
-        // Default tanggal jika tidak ada input
+        // Ambil rentang tanggal dan nomor faktur dari request
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-
-        // Ambil input filter
         $id = $request->input('id');
-        $user = Auth::user();
 
         // Query untuk mengambil data berdasarkan filter
-        $query = Order::query();
 
-        // Filter berdasarkan nomor faktur (ID)
-        if ($id) {
-            $query->where('id', 'like',   $id );
-        }
+        // $query = Order::query();
 
-        // Filter berdasarkan rentang tanggal
-        if ($startDate && $endDate) {
-            $query->whereBetween('created_at', [
-                Carbon::parse($startDate)->startOfDay(),
-                Carbon::parse($endDate)->endOfDay()
-            ]);
-        }
+        // // Filter berdasarkan nomor faktur (ID)
+        // if ($id) {
+        //     $query->where('id', 'like',   $id );
+        // }
 
-        // Filter untuk user non-admin (role 2)
-        if ($user->role === 2) {
-            $query->where('user_id', $user->id);
-        }
+        // // Filter berdasarkan rentang tanggal
+        // if ($startDate && $endDate) {
+        //     $query->whereBetween('created_at', [
+        //         Carbon::parse($startDate)->startOfDay(),
+        //         Carbon::parse($endDate)->endOfDay()
+        //     ]);
+        // }
 
-        // Eager load order items dan produk terkait
-        $orders = $query->with('orderItems.product')
-        ->orderBy('id', 'asc')
-        ->get();
+        // // Filter untuk user non-admin (role 2)
+        // if ($user->role === 2) {
+        //     $query->where('user_id', $user->id);
+        // }
+
+        // // Eager load order items dan produk terkait
+        // $orders = $query->with('orderItems.product')
+        // ->orderBy('id', 'asc')
+        // ->get();
+
+        $orders = Order::when($id, function ($query, $id) {
+            return $query->where('id', 'like',   $id );
+        })
+            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                Log::info("Start Date: $startDate, End Date: $endDate");
+                return $query->whereBetween('created_at', [
+                    Carbon::parse($startDate)->startOfDay(),
+                    Carbon::parse($endDate)->endOfDay()
+                ]);
+            })
+            ->with('orderItems') // Eager load order_items
+            ->get();
 
         return view('pages.history.index', compact('orders'));
     }
@@ -62,15 +75,13 @@ class OrderController extends Controller
     public function show($id)
     {
         try {
-            // Mengambil order dengan relasi items dan product
             $order = Order::with('items.product', 'user')->findOrFail($id);
-
             return response()->json([
                 'id' => $order->id,
                 'cashier' => $order->user->name,
                 'date' => $order->created_at->format('d-m-Y H:i'),
-                'payment' => $order->payment_method, // Ambil langsung kolom payment_method
                 'total' => $order->total_price,
+                'payment' => $order->payment_method,
                 'items' => $order->items->map(function ($item) {
                     return [
                         'quantity' => $item->quantity,
@@ -88,50 +99,6 @@ class OrderController extends Controller
         }
     }
 
-
-    public function store(Request $request)
-    {
-        // Validasi request (pastikan data sudah benar sebelum masuk ke DB)
-        $request->validate([
-            'products' => 'required|array',
-            'products.*.product_id' => 'required|integer',
-            'products.*.quantity' => 'required|integer|min:1',
-        ]);
-
-        // Hitung total jumlah item dan total harga keseluruhan
-        $totalItems = 0;
-        $totalPrice = 0;
-
-        foreach ($request->products as $product) {
-            $totalItems += $product['quantity'];
-            $productModel = Product::findOrFail($product['product_id']);
-            $totalPrice += $productModel->price * $product['quantity'];
-        }
-
-        $user = Auth::user();
-        // Simpan ke tabel `orders`
-        $order = Order::create([
-            'user_id' => $user->id, // Ambil user yang sedang login
-            'total_items' => $totalItems,
-            'total_price' => $totalPrice,
-        ]);
-
-        // Simpan ke tabel `order_items`
-        foreach ($request->products as $product) {
-            $productModel = Product::findOrFail($product['product_id']);
-            $subtotalPrice = $productModel->price * $product['quantity'];
-
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $product['product_id'],
-                'quantity' => $product['quantity'],
-                'subtotal_price' => $subtotalPrice,
-            ]);
-        }
-
-        return response()->json(['message' => 'Order berhasil disimpan.'], 201);
-    }
-
     public function export_transactions(Request $request)
     {
         // Validasi input
@@ -142,7 +109,7 @@ class OrderController extends Controller
 
         // Tentukan nama file berdasarkan filter
         $filename = 'laporan_transaksi_' . $request->filter . '_' .
-                    Carbon::parse($request->date)->format('Y-m-d');
+            Carbon::parse($request->date)->format('Y-m-d');
 
         // Cek aksi yang dipilih
         if ($request->action === 'pdf') {
@@ -172,8 +139,7 @@ class OrderController extends Controller
             $mpdf = new \Mpdf\Mpdf();
             $mpdf->WriteHTML(view('pages.history.table', compact('orders', 'dateText'))->render());
             $mpdf->Output($filename . '.pdf', 'D');
-        }
-        else if ($request->action === 'excel') {
+        } else if ($request->action === 'excel') {
             // Proses download Excel
             return Excel::download(
                 new RiwayatTransaksiExport($request->filter, $request->date),
@@ -181,7 +147,4 @@ class OrderController extends Controller
             );
         }
     }
-
-
-
 }

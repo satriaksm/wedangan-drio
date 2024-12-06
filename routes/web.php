@@ -32,7 +32,7 @@ Route::get('/', function () {
 
 
 //Route Middleware ADMIN
-Route::middleware(['auth',AdminMiddleware::class])->group(function () {
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('/history', [OrderController::class, 'index'])->name('history.index');
@@ -65,6 +65,7 @@ Route::middleware(['auth',AdminMiddleware::class])->group(function () {
 //Route Middleware CASHIER
 Route::middleware(['auth'])->group(function () {
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+    Route::get('/transaction/pay', [TransactionController::class, 'pay'])->name('transaction.pay');
     Route::post('/transaction/pay', [TransactionController::class, 'pay'])->name('transaction.pay');
     Route::post('/transaction/process', [TransactionController::class, 'process'])->name('transaction.process');
 
@@ -87,4 +88,4 @@ Route::get('/images/{folder}/{filename}', function ($folder, $filename) {
     return Response::file($path); // Mengembalikan file gambar
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

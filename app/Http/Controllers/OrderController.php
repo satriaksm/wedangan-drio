@@ -23,8 +23,8 @@ class OrderController extends Controller
         ]);
 
         // Default tanggal jika tidak ada input
-        $startDate = $request->input('start_date', now()->format('m/d/Y'));
-        $endDate = $request->input('end_date', now()->format('m/d/Y'));
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
         // Ambil input filter
         $id = $request->input('id');
@@ -35,7 +35,7 @@ class OrderController extends Controller
 
         // Filter berdasarkan nomor faktur (ID)
         if ($id) {
-            $query->where('id', 'like', '%' . $id . '%');
+            $query->where('id', 'like',   $id );
         }
 
         // Filter berdasarkan rentang tanggal
@@ -53,8 +53,8 @@ class OrderController extends Controller
 
         // Eager load order items dan produk terkait
         $orders = $query->with('orderItems.product')
-            ->latest()
-            ->get();
+        ->orderBy('id', 'asc')
+        ->get();
 
         return view('pages.history.index', compact('orders'));
     }

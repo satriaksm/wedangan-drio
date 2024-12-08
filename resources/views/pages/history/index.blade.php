@@ -16,6 +16,59 @@
             </button>
             <!-- Date range filter -->
         @endif
+
+        @if (Auth::user()->role == 1)
+            <button id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" class="inline-flex items-center px-4 py-2 text-sm sm:text-base font-medium text-center text-white bg-primary rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-primary dark:focus:ring-blue-800" type="button"><svg class="w-5 h-5 me-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464l349.5 0c-8.9-63.3-63.3-112-129-112l-91.4 0c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3z"/></svg>Kasir<svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+            </svg></button>
+        @endif
+
+        <!-- Dropdown menu -->
+        <div id="dropdownSearch" class="hidden bg-white rounded-lg shadow w-60 dark:bg-gray-700 z-20">
+            <div class="p-3">
+                <label for="input-group-search" class="sr-only">Search</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input type="text" id="user-search-input"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                           placeholder="Search user">
+                </div>
+            </div>
+            <form action="{{ route('history.index') }}" method="GET">
+                <ul class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input id="checkbox-all" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="checkbox-all" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Semua</label>
+                        </div>
+                    </li>
+                    @foreach($users as $user)
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input
+                                id="checkbox-item-{{ $user->id }}"
+                                type="checkbox"
+                                name="users[]"
+                                value="{{ $user->id }}"
+                                class="user-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                {{ in_array($user->id, request('users', [])) ? 'checked' : '' }}
+                            >
+                            <label for="checkbox-item-{{ $user->id }}" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">{{ $user->name }}</label>
+                        </div>
+                    </li>
+                    @endforeach
+                </ul>
+                <div class="p-3">
+                    <button type="submit" class="w-full bg-primary text-white py-2 rounded">Filter</button>
+                </div>
+            </form>
+        </div>
+
+
         <form action="{{ route('history.index') }}" method="GET"
             class="order-3 flex justify-between bg-primary py-[1px]  ps-[1px] rounded-lg text-white text-xs items-center w-full sm:w-auto relative ">
             <div id="date-range-picker" date-rangepicker class="flex items-center">
@@ -90,7 +143,10 @@
                     <th scope="col" class="px-1 py-2 lg:px-6 lg:py-3 text-center capitalize">
                         Barang
                     </th>
-                    <th scope="col" class="px-1 py-2 lg:px-6 lg:py-3 text-center capitalize hidden sm:block">
+                    <th scope="col" class="px-1 py-2 lg:px-6 lg:py-3 text-center capitalize hidden sm:table-cell">
+                        Kasir
+                    </th>
+                    <th scope="col" class="px-1 py-2 lg:px-6 lg:py-3 text-center capitalize hidden sm:table-cell">
                         Pembayaran
                     </th>
                     <th scope="col" class="lg:table-cell px-1 py-2 lg:px-6 lg:py-3 text-center capitalize">
@@ -114,13 +170,13 @@
                             <p class="truncate">{{ implode(', ', $order->orderItems->pluck('product.name')->toArray()) }}
                             </p>
                         </td>
-                        <td class="px-1 py-2 lg:px-6 lg:py-4 text-center capitalize hidden sm:block">
-                            {{ $order->payment_method }}</td>
-                        <td class="px-1 py-2 lg:px-6 lg:py-4 text-center">{{ $order->created_at->format('d-m-Y H:i') }}
-                        </td>
+                        <td class="px-1 py-2 lg:px-6 lg:py-4 text-center capitalize hidden sm:table-cell">{{ $order->user->name }}</td>
+                        <td class="px-1 py-2 lg:px-6 lg:py-4 text-center capitalize hidden sm:table-cell">{{ $order->payment_method }}</td>
+                        <td class="px-1 py-2 lg:px-6 lg:py-4 text-center">{{ $order->created_at->format('d-m-Y H:i') }}</td>
                         <td class="px-1 py-2 lg:px-6 lg:py-4 text-center capitalize"><span
                                 class="sm:hidden">{{ $order->payment_method }} : </span>Rp
-                            {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                            {{ number_format($order->total_price, 0, ',', '.') }}
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -336,6 +392,63 @@
             this.appendChild(hiddenInput);
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxAll = document.getElementById('checkbox-all');
+            const userCheckboxes = document.querySelectorAll('.user-checkbox');
 
+            // Toggle semua checkbox
+            checkboxAll.addEventListener('change', function() {
+                userCheckboxes.forEach(checkbox => {
+                    checkbox.checked = checkboxAll.checked;
+                });
+            });
+
+            // Update checkbox all jika semua user checkbox di-check/uncheck
+            userCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    checkboxAll.checked = Array.from(userCheckboxes).every(cb => cb.checked);
+                });
+            });
+        });
+    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('user-search-input');
+        const userList = document.querySelectorAll('#dropdownSearch ul li:not(:first-child)');
+        const checkboxAll = document.getElementById('checkbox-all');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+
+            userList.forEach(userItem => {
+                const userName = userItem.querySelector('label').textContent.toLowerCase();
+                const isVisible = userName.includes(searchTerm);
+                userItem.style.display = isVisible ? 'block' : 'none';
+            });
+
+            // If no users are visible, show a "No users found" message
+            const visibleUsers = Array.from(userList).filter(item => item.style.display !== 'none');
+            if (visibleUsers.length === 0) {
+                // If no message exists, create one
+                let noResultsMessage = document.getElementById('no-users-message');
+                if (!noResultsMessage) {
+                    noResultsMessage = document.createElement('li');
+                    noResultsMessage.id = 'no-users-message';
+                    noResultsMessage.className = 'px-3 py-2 text-gray-500';
+                    noResultsMessage.textContent = 'No users found';
+                    document.querySelector('#dropdownSearch ul').appendChild(noResultsMessage);
+                }
+                noResultsMessage.style.display = 'block';
+            } else {
+                // Remove no results message if it exists
+                const noResultsMessage = document.getElementById('no-users-message');
+                if (noResultsMessage) {
+                    noResultsMessage.style.display = 'none';
+                }
+            }
+        });
+    });
+    </script>
 
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderItem;
@@ -9,8 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use App\Exports\RiwayatTransaksiExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RiwayatTransaksiExport;
 
 class OrderController extends Controller
 {
@@ -18,6 +19,8 @@ class OrderController extends Controller
     {
         $startDate = $request->input('start_date', now()->format('Y-m-d'));
         $endDate = $request->input('end_date', now()->format('Y-m-d'));
+        $selectedUsers = $request->input('users', []);
+        $id = $request->input('id');
 
         $request->validate([
             'start_date' => 'nullable|date',
@@ -29,32 +32,6 @@ class OrderController extends Controller
         $endDate = $request->input('end_date');
         $id = $request->input('id');
 
-        // Query untuk mengambil data berdasarkan filter
-
-        // $query = Order::query();
-
-        // // Filter berdasarkan nomor faktur (ID)
-        // if ($id) {
-        //     $query->where('id', 'like',   $id );
-        // }
-
-        // // Filter berdasarkan rentang tanggal
-        // if ($startDate && $endDate) {
-        //     $query->whereBetween('created_at', [
-        //         Carbon::parse($startDate)->startOfDay(),
-        //         Carbon::parse($endDate)->endOfDay()
-        //     ]);
-        // }
-
-        // // Filter untuk user non-admin (role 2)
-        // if ($user->role === 2) {
-        //     $query->where('user_id', $user->id);
-        // }
-
-        // // Eager load order items dan produk terkait
-        // $orders = $query->with('orderItems.product')
-        // ->orderBy('id', 'asc')
-        // ->get();
 
         $orders = Order::when($id, function ($query, $id) {
             return $query->where('id', 'like',   $id );
@@ -66,10 +43,14 @@ class OrderController extends Controller
                     Carbon::parse($endDate)->endOfDay()
                 ]);
             })
+            ->when(!empty($selectedUsers), function ($query) use ($selectedUsers) {
+                return $query->whereIn('user_id', $selectedUsers);
+            })
             ->with('orderItems') // Eager load order_items
             ->get();
 
-        return view('pages.history.index', compact('orders'));
+            $users = User::all();
+        return view('pages.history.index', compact('orders', 'users'));
     }
 
     public function show($id)

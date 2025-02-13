@@ -7,9 +7,8 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
 
-# Aplikasi POS Laravel
+# Aplikasi POS Wedangan D'rio
 
 Aplikasi ini adalah sistem Point of Sale (POS) berbasis Laravel untuk mengelola transaksi di warung makan bernama Wedangan D'rio.
 

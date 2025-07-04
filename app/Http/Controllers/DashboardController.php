@@ -63,13 +63,13 @@ class DashboardController extends Controller
             : 0;
 
         // Top 10 produk terlaris
-        $topProducts = Product::select('products.*')
+        $topProducts = Product::select('products.id', 'products.name', 'products.selling_price', 'products.img')
             ->join('order_items', 'products.id', '=', 'order_items.product_id')
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->whereIn('orders.id', $query->pluck('id'))
             ->selectRaw('SUM(order_items.quantity) as total_sold')
             ->selectRaw('SUM(order_items.quantity * products.selling_price) as total_revenue')
-            ->groupBy('products.id')
+            ->groupBy('products.id', 'products.name', 'products.selling_price', 'products.img')
             ->orderByDesc('total_sold')
             ->limit(10)
             ->get();
